@@ -17,8 +17,8 @@ alias ChimeraCms.Blog.Post
 
 # Create admin user
 admin_user = %{
-  email: "admin@chimera.com",
-  password: "admin123",
+  email: System.get_env("ADMIN_EMAIL") || "admin@chimera.com",
+  password: System.get_env("ADMIN_PASSWORD") || "admin123",
   first_name: "Admin",
   last_name: "User",
   role: "admin",

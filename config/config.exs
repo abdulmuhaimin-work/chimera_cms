@@ -20,7 +20,7 @@ config :chimera_cms, ChimeraCmsWeb.Endpoint,
     layout: false
   ],
   pubsub_server: ChimeraCms.PubSub,
-  live_view: [signing_salt: "zTOOdS03"]
+  live_view: [signing_salt: System.get_env("LIVEVIEW_SIGNING_SALT") || "zTOOdS03"]
 
 # Configures the mailer
 #

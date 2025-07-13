@@ -33,10 +33,10 @@ defmodule ChimeraCmsWeb.Router do
   scope "/api", ChimeraCmsWeb do
     pipe_through :api
 
-    get "/posts", PostController, :index
-    get "/posts/:id", PostController, :show
-    get "/projects", ProjectController, :index
-    get "/projects/:id", ProjectController, :show
+    get "/posts", Api.PostController, :index
+    get "/posts/:id", Api.PostController, :show
+    get "/projects", Api.ProjectController, :index
+    get "/projects/:id", Api.ProjectController, :show
   end
 
   # Authentication routes

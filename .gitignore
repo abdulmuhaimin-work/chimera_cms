@@ -35,3 +35,9 @@ chimera_cms-*.tar
 npm-debug.log
 /assets/node_modules/
 
+# Environment variables (NEVER commit these!)
+.env
+.env.local
+.env.production
+.env.development
+

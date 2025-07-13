@@ -9,7 +9,8 @@ defmodule ChimeraCms.MixProject do
       elixirc_paths: elixirc_paths(Mix.env()),
       start_permanent: Mix.env() == :prod,
       aliases: aliases(),
-      deps: deps()
+      deps: deps(),
+      releases: releases()
     ]
   end
 
@@ -58,7 +59,8 @@ defmodule ChimeraCms.MixProject do
       {:corsica, "~> 2.1"},
       {:earmark, "~> 1.4"},
       {:slugify, "~> 1.3"},
-      {:ex_image_info, "~> 0.2"}
+      {:ex_image_info, "~> 0.2"},
+      {:dotenv, "~> 3.0.0", only: [:dev, :test]}
     ]
   end
 
@@ -77,6 +79,16 @@ defmodule ChimeraCms.MixProject do
       "assets.setup": ["tailwind.install --if-missing", "esbuild.install --if-missing"],
       "assets.build": ["tailwind default", "esbuild default"],
       "assets.deploy": ["tailwind default --minify", "esbuild default --minify", "phx.digest"]
+    ]
+  end
+
+  defp releases do
+    [
+      chimera_cms: [
+        include_executables_for: [:unix],
+        applications: [runtime_tools: :permanent],
+        overlays: ["rel/overlays"]
+      ]
     ]
   end
 end

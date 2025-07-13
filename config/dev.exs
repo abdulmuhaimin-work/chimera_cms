@@ -1,14 +1,22 @@
 import Config
 
+# Load environment variables from .env file
+if Code.ensure_loaded?(Dotenv) do
+  Dotenv.load()
+end
+
 # Configure your database
 config :chimera_cms, ChimeraCms.Repo,
-  username: "postgres",
-  password: "zxcv5653",
-  hostname: "localhost",
-  database: "chimera_cms_dev",
+  username: System.get_env("DB_USERNAME") || "postgres",
+  password: System.get_env("DB_PASSWORD") || "zxcv5653",
+  hostname: System.get_env("DB_HOSTNAME") || "localhost",
+  database: System.get_env("DB_NAME") || "chimera_cms_dev",
   stacktrace: true,
   show_sensitive_data_on_connection_error: true,
-  pool_size: 10
+  pool_size: 20,
+  queue_target: 5000,
+  queue_interval: 1000,
+  timeout: 30000
 
 # For development, we disable any cache and enable
 # debugging and code reloading.
@@ -19,11 +27,11 @@ config :chimera_cms, ChimeraCms.Repo,
 config :chimera_cms, ChimeraCmsWeb.Endpoint,
   # Binding to loopback ipv4 address prevents access from other machines.
   # Change to `ip: {0, 0, 0, 0}` to allow access from other machines.
-  http: [ip: {127, 0, 0, 1}, port: 4000],
+  http: [ip: {127, 0, 0, 1}, port: String.to_integer(System.get_env("PORT") || "4000")],
   check_origin: false,
   code_reloader: true,
   debug_errors: true,
-  secret_key_base: "Ejlx60zyzhQSwsmqZxCDg2bqmap47zLWmIZ3kt6ZROL/L6ca7FuwT0P0b15/k17/",
+  secret_key_base: System.get_env("SECRET_KEY_BASE") || "Ejlx60zyzhQSwsmqZxCDg2bqmap47zLWmIZ3kt6ZROL/L6ca7FuwT0P0b15/k17/",
   watchers: [
     esbuild: {Esbuild, :install_and_run, [:default, ~w(--sourcemap=inline --watch)]},
     tailwind: {Tailwind, :install_and_run, [:default, ~w(--watch)]}
@@ -48,15 +56,23 @@ config :chimera_cms, ChimeraCmsWeb.Endpoint,
 #       certfile: "priv/cert/selfsigned.pem"
 #     ],
 #
-# If desired, both `http:` and `https:` keys can be
-# configured to run both http and https servers on
-# different ports.
+# If you are doing OTP releases, you need to instruct Phoenix
+# to start each relevant endpoint:
+#
+#     config :chimera_cms, ChimeraCmsWeb.Endpoint, server: true
+#
+# The code reloading feature requires explicit activation in OTP releases:
+#
+#     config :chimera_cms, ChimeraCmsWeb.Endpoint, code_reloader: true
+#
+# Note: Environment variables can be loaded here
+# For production, use runtime.exs or environment variable loading
 
 # Watch static and templates for browser reloading.
 config :chimera_cms, ChimeraCmsWeb.Endpoint,
   live_reload: [
     patterns: [
-      ~r"priv/static/.*(js|css|png|jpeg|jpg|gif|svg)$",
+      ~r"priv/static/(?!uploads/).*(js|css|png|jpeg|jpg|gif|svg)$",
       ~r"priv/gettext/.*(po)$",
       ~r"lib/chimera_cms_web/(controllers|live|components)/.*(ex|heex)$"
     ]
