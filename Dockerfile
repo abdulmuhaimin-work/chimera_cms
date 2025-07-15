@@ -84,4 +84,4 @@ USER nobody
 # If using a release, you must set PHX_SERVER=true
 ENV PHX_SERVER=true
 
-CMD ["/app/bin/server"] 
+CMD ["/app/bin/chimera_cms", "start"] 
