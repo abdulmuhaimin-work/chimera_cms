@@ -64,7 +64,7 @@ config :phoenix, :json_library, Jason
 # Configure Guardian
 config :chimera_cms, ChimeraCms.Guardian,
   issuer: "chimera_cms",
-  secret_key: "k+dK9qJY8+5c9QrJWOo5ZVwUXuQzV8SyQfpgkEzSMfUWOjWDGJNXvwC5GDQnYGgc"
+  secret_key: System.get_env("GUARDIAN_SECRET_KEY") || "1Xrx9L/mzdm5vh0VZ7xeuQ4NX4Skovl2R7hoU3A3/Rit0juMSBIHoxpRWfNDZ3wt"
 
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.

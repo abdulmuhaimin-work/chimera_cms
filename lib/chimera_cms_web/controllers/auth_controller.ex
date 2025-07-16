@@ -2,8 +2,7 @@ defmodule ChimeraCmsWeb.AuthController do
   use ChimeraCmsWeb, :controller
 
   alias ChimeraCms.Accounts
-  alias ChimeraCms.Accounts.User
-  alias ChimeraCms.Auth.Guardian
+  alias ChimeraCms.Guardian
 
   def login_form(conn, _params) do
     changeset = Accounts.change_user_login(%{})
@@ -13,7 +12,7 @@ defmodule ChimeraCmsWeb.AuthController do
   def login(conn, %{"user" => user_params}) do
     case Accounts.authenticate_user(user_params["email"], user_params["password"]) do
       {:ok, user} ->
-        {:ok, token, _claims} = ChimeraCms.Guardian.encode_and_sign(user)
+        {:ok, token, _claims} = Guardian.encode_and_sign(user)
 
         conn
         |> put_session(:user_token, token)

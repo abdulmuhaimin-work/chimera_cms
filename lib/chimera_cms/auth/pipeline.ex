@@ -1,10 +1,10 @@
 defmodule ChimeraCms.Auth.Pipeline do
-  use Guardian.Plug.Pipeline,
-    otp_app: :chimera_cms,
-    module: ChimeraCms.Auth.Guardian,
-    error_handler: ChimeraCms.Auth.ErrorHandler
+  def init(opts), do: opts
 
-  plug Guardian.Plug.VerifyHeader, scheme: "Bearer"
-  plug Guardian.Plug.EnsureAuthenticated
-  plug Guardian.Plug.LoadResource
+  def call(conn, _opts) do
+    conn
+    |> Guardian.Plug.VerifyHeader.call(Guardian.Plug.VerifyHeader.init(scheme: "Bearer"))
+    |> Guardian.Plug.EnsureAuthenticated.call(Guardian.Plug.EnsureAuthenticated.init([]))
+    |> Guardian.Plug.LoadResource.call(Guardian.Plug.LoadResource.init([]))
+  end
 end
