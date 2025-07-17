@@ -12,7 +12,7 @@ defmodule ChimeraCmsWeb.Router do
 
   pipeline :api do
     plug :accepts, ["json"]
-    plug Corsica, origins: ["http://localhost:3000", "http://localhost:5173"]
+    plug Corsica, origins: ["http://localhost:3000", "http://localhost:5173", "https://abdulmuhaimin.my/"]
   end
 
   pipeline :authenticated do
