@@ -2,8 +2,6 @@ defmodule ChimeraCmsWeb.AuthController do
   use ChimeraCmsWeb, :controller
 
   alias ChimeraCms.Accounts
-  alias ChimeraCms.Accounts.User
-  alias ChimeraCms.Auth.Guardian
 
   def login_form(conn, _params) do
     changeset = Accounts.change_user_login(%{})
@@ -39,18 +37,24 @@ defmodule ChimeraCmsWeb.AuthController do
   end
 
   def me(conn, _params) do
-    user = Guardian.Plug.current_resource(conn)
+    user = conn.assigns[:current_user]
 
-    conn
-    |> put_status(:ok)
-    |> json(%{
-      user: %{
-        id: user.id,
-        email: user.email,
-        first_name: user.first_name,
-        last_name: user.last_name,
-        role: user.role
-      }
-    })
+    if user do
+      conn
+      |> put_status(:ok)
+      |> json(%{
+        user: %{
+          id: user.id,
+          email: user.email,
+          first_name: user.first_name,
+          last_name: user.last_name,
+          role: user.role
+        }
+      })
+    else
+      conn
+      |> put_status(:unauthorized)
+      |> json(%{error: "Not authenticated"})
+    end
   end
 end

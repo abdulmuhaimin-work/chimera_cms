@@ -13,7 +13,10 @@ defmodule ChimeraCmsWeb.Auth.Pipeline do
         {:ok, claims} ->
           if claims["sub"] == to_string(user_id) do
             user = ChimeraCms.Accounts.get_user!(user_id)
-            assign(conn, :current_user, user)
+            conn
+            |> assign(:current_user, user)
+            |> put_session(:current_user, user_id)
+            |> put_session(:user_token, token)
           else
             redirect_to_login(conn)
           end

@@ -51,6 +51,22 @@ defmodule ChimeraCms.Portfolio do
   def get_project!(id), do: Repo.get!(Project, id)
 
   @doc """
+  Gets a single project.
+
+  Returns nil if the Project does not exist.
+
+  ## Examples
+
+      iex> get_project(123)
+      %Project{}
+
+      iex> get_project(456)
+      nil
+
+  """
+  def get_project(id), do: Repo.get(Project, id)
+
+  @doc """
   Creates a project.
 
   ## Examples
@@ -122,11 +138,4 @@ defmodule ChimeraCms.Portfolio do
   def change_project(%Project{} = project, attrs \\ %{}) do
     Project.changeset(project, attrs)
   end
-
-  @doc """
-  Gets a single project.
-
-  Returns `nil` if the Project does not exist.
-  """
-  def get_project(id), do: Repo.get(Project, id)
 end
