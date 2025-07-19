@@ -3,12 +3,14 @@ defmodule ChimeraCmsWeb.Admin.DashboardLive do
 
   alias ChimeraCms.Blog
   alias ChimeraCms.Portfolio
+  alias ChimeraCms.Resume
 
   @impl true
   def mount(_params, _session, socket) do
     if connected?(socket) do
       Blog.subscribe()
       Portfolio.subscribe()
+      Resume.subscribe()
     end
 
     socket =
@@ -49,9 +51,25 @@ defmodule ChimeraCmsWeb.Admin.DashboardLive do
     {:noreply, assign_stats(socket)}
   end
 
+  @impl true
+  def handle_info({:work_experience_created, _work_experience}, socket) do
+    {:noreply, assign_stats(socket)}
+  end
+
+  @impl true
+  def handle_info({:work_experience_updated, _work_experience}, socket) do
+    {:noreply, assign_stats(socket)}
+  end
+
+  @impl true
+  def handle_info({:work_experience_deleted, _work_experience}, socket) do
+    {:noreply, assign_stats(socket)}
+  end
+
   defp assign_stats(socket) do
     posts = Blog.list_posts()
     projects = Portfolio.list_projects()
+    work_experiences = Resume.list_work_experiences()
 
     socket
     |> assign(:total_posts, length(posts))
@@ -59,7 +77,9 @@ defmodule ChimeraCmsWeb.Admin.DashboardLive do
     |> assign(:draft_posts, Enum.count(posts, &(not &1.published)))
     |> assign(:total_projects, length(projects))
     |> assign(:featured_projects, Enum.count(projects, & &1.featured))
+    |> assign(:total_work_experiences, length(work_experiences))
     |> assign(:recent_posts, Enum.take(posts, 5))
     |> assign(:recent_projects, Enum.take(projects, 5))
+    |> assign(:recent_work_experiences, Enum.take(work_experiences, 5))
   end
 end

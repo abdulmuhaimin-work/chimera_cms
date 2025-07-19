@@ -1,0 +1,363 @@
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+  <div class="py-6">
+    <!-- Header -->
+    <div class="md:flex md:items-center md:justify-between">
+      <div class="min-w-0 flex-1">
+        <h2 class="text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight">
+          <%= @page_title %>
+        </h2>
+      </div>
+      <div class="mt-4 flex md:ml-4 md:mt-0">
+        <%= if @live_action == :index do %>
+          <.link
+            navigate={~p"/admin/work-experiences/new"}
+            class="inline-flex items-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+          >
+            New Work Experience
+          </.link>
+        <% end %>
+        
+        <%= if @live_action in [:show, :edit] do %>
+          <.link
+            navigate={~p"/admin/work-experiences"}
+            class="inline-flex items-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+          >
+            ← Back to Work Experiences
+          </.link>
+        <% end %>
+      </div>
+    </div>
+
+    <!-- Content -->
+    <div class="mt-8">
+      <%= if @live_action == :index do %>
+        <!-- Work Experiences List -->
+        <div class="bg-white shadow rounded-lg">
+          <div class="px-4 py-5 sm:p-6">
+            <div class="flow-root">
+              <div class="-my-5 divide-y divide-gray-200">
+                <%= for work_experience <- @work_experiences do %>
+                  <div class="py-5">
+                    <div class="flex items-center justify-between">
+                      <div class="min-w-0 flex-1">
+                        <div class="flex items-center space-x-3">
+                          <h3 class="text-lg font-medium text-gray-900">
+                            <.link navigate={~p"/admin/work-experiences/#{work_experience.id}"} class="hover:text-indigo-600">
+                              <%= work_experience.title %>
+                            </.link>
+                          </h3>
+                          <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                            Sort: <%= work_experience.sort_order || 0 %>
+                          </span>
+                        </div>
+                        <p class="mt-1 text-sm font-medium text-gray-700">
+                          <%= work_experience.company %>
+                        </p>
+                        <p class="mt-1 text-sm text-gray-500">
+                          <%= work_experience.period %>
+                        </p>
+                        <p class="mt-1 text-sm text-gray-600">
+                          <%= String.slice(work_experience.description, 0, 120) %><%= if String.length(work_experience.description) > 120, do: "..." %>
+                        </p>
+                        <div class="mt-2 text-sm text-gray-500">
+                          <span>Updated <%= Calendar.strftime(work_experience.updated_at, "%B %d, %Y") %></span>
+                        </div>
+                        <%= if work_experience.technologies && length(work_experience.technologies) > 0 do %>
+                          <div class="mt-2 flex flex-wrap gap-1">
+                            <%= for tech <- Enum.take(work_experience.technologies, 4) do %>
+                              <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-gray-100 text-gray-800">
+                                <%= tech %>
+                              </span>
+                            <% end %>
+                            <%= if length(work_experience.technologies) > 4 do %>
+                              <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-gray-200 text-gray-600">
+                                +<%= length(work_experience.technologies) - 4 %> more
+                              </span>
+                            <% end %>
+                          </div>
+                        <% end %>
+                      </div>
+                      <div class="flex items-center space-x-2">
+                        <.link
+                          navigate={~p"/admin/work-experiences/#{work_experience.id}/edit"}
+                          class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-indigo-700 bg-indigo-100 hover:bg-indigo-200"
+                        >
+                          Edit
+                        </.link>
+                        <button
+                          phx-click="delete"
+                          phx-value-id={work_experience.id}
+                          data-confirm="Are you sure you want to delete this work experience?"
+                          class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-red-700 bg-red-100 hover:bg-red-200"
+                        >
+                          Delete
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                <% end %>
+                
+                <%= if @work_experiences == [] do %>
+                  <div class="py-12 text-center">
+                    <div class="mx-auto h-12 w-12 text-gray-400 mb-4">
+                      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                      </svg>
+                    </div>
+                    <h3 class="mt-2 text-sm font-medium text-gray-900">No work experiences</h3>
+                    <p class="mt-1 text-sm text-gray-500">Get started by adding your first work experience.</p>
+                    <div class="mt-6">
+                      <.link
+                        navigate={~p"/admin/work-experiences/new"}
+                        class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700"
+                      >
+                        Add Work Experience
+                      </.link>
+                    </div>
+                  </div>
+                <% end %>
+              </div>
+            </div>
+          </div>
+        </div>
+      <% end %>
+
+      <%= if @live_action == :show do %>
+        <!-- Work Experience Show -->
+        <div class="bg-white shadow rounded-lg">
+          <div class="px-4 py-5 sm:p-6">
+            <div class="flex items-center justify-between mb-6">
+              <div class="flex items-center space-x-3">
+                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                  Sort Order: <%= @work_experience.sort_order || 0 %>
+                </span>
+              </div>
+              <div class="flex items-center space-x-2">
+                <.link
+                  navigate={~p"/admin/work-experiences/#{@work_experience.id}/edit"}
+                  class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-indigo-700 bg-indigo-100 hover:bg-indigo-200"
+                >
+                  Edit Work Experience
+                </.link>
+              </div>
+            </div>
+
+            <div class="space-y-6">
+              <div>
+                <h1 class="text-2xl font-bold text-gray-900"><%= @work_experience.title %></h1>
+                <p class="text-lg text-indigo-600 mt-1"><%= @work_experience.company %></p>
+                <p class="text-sm text-gray-500 mt-1"><%= @work_experience.period %></p>
+              </div>
+              
+              <div>
+                <h3 class="text-lg font-medium text-gray-900 mb-2">Description</h3>
+                <div class="prose max-w-none">
+                  <p class="text-gray-700 whitespace-pre-line"><%= @work_experience.description %></p>
+                </div>
+              </div>
+
+              <%= if @work_experience.technologies && length(@work_experience.technologies) > 0 do %>
+                <div>
+                  <h3 class="text-lg font-medium text-gray-900 mb-3">Technologies & Skills</h3>
+                  <div class="flex flex-wrap gap-2">
+                    <%= for tech <- @work_experience.technologies do %>
+                      <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-gray-100 text-gray-800">
+                        <%= tech %>
+                      </span>
+                    <% end %>
+                  </div>
+                </div>
+              <% end %>
+
+              <div class="text-sm text-gray-500 pt-4 border-t border-gray-200">
+                <p>Created <%= Calendar.strftime(@work_experience.inserted_at, "%B %d, %Y at %I:%M %p") %></p>
+                <p>Last updated <%= Calendar.strftime(@work_experience.updated_at, "%B %d, %Y at %I:%M %p") %></p>
+              </div>
+            </div>
+          </div>
+        </div>
+      <% end %>
+
+      <%= if @live_action in [:new, :edit] do %>
+        <!-- Work Experience Form -->
+        <div class="bg-white shadow-xl rounded-xl border border-gray-100">
+          <!-- Form Header -->
+          <div class="px-6 py-5 border-b border-gray-200 bg-gradient-to-r from-green-50 to-blue-50">
+            <div class="flex items-center">
+              <div class="flex-shrink-0">
+                <div class="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
+                  <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                  </svg>
+                </div>
+              </div>
+              <div class="ml-4">
+                <h3 class="text-lg font-semibold text-gray-900">
+                  <%= if @live_action == :new, do: "Add New Work Experience", else: "Edit Work Experience" %>
+                </h3>
+                <p class="text-sm text-gray-600">
+                  <%= if @live_action == :new, do: "Add your professional experience and skills", else: "Update work experience details" %>
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="px-6 py-8">
+            <.form
+              for={@form}
+              phx-submit="save"
+              phx-change="validate"
+              class="space-y-8"
+            >
+              <!-- Basic Information Section -->
+              <div class="bg-gray-50 rounded-lg p-6">
+                <h4 class="text-lg font-medium text-gray-900 mb-4 flex items-center">
+                  <svg class="w-5 h-5 text-indigo-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                  </svg>
+                  Basic Information
+                </h4>
+                <div class="grid grid-cols-1 xl:grid-cols-2 gap-6">
+                  <div>
+                    <.input
+                      field={@form[:title]}
+                      type="text"
+                      label="Job Title"
+                      required
+                      placeholder="e.g., Senior Software Developer"
+                      class="text-lg"
+                    />
+                  </div>
+                  <div>
+                    <.input
+                      field={@form[:company]}
+                      type="text"
+                      label="Company"
+                      required
+                      placeholder="e.g., Tech Company Ltd."
+                    />
+                  </div>
+                </div>
+                <div class="grid grid-cols-1 xl:grid-cols-2 gap-6 mt-6">
+                  <div>
+                    <.input
+                      field={@form[:period]}
+                      type="text"
+                      label="Period"
+                      required
+                      placeholder="e.g., January 2020 - Present"
+                      help="Employment period (e.g., 'Jan 2020 - Dec 2022' or 'Jan 2020 - Present')"
+                    />
+                  </div>
+                  <div>
+                    <.input
+                      field={@form[:sort_order]}
+                      type="number"
+                      label="Sort Order"
+                      placeholder="0"
+                      help="Lower numbers appear first in the list (leave empty for auto-assignment)"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <!-- Description Section -->
+              <div class="bg-blue-50 rounded-lg p-6">
+                <h4 class="text-lg font-medium text-gray-900 mb-4 flex items-center">
+                  <svg class="w-5 h-5 text-blue-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                  </svg>
+                  Job Description
+                </h4>
+                <div class="bg-white rounded-lg border border-blue-200 p-1">
+                  <div class="bg-blue-100 px-3 py-2 rounded-t-lg border-b border-blue-200">
+                    <div class="flex items-center justify-between">
+                      <span class="text-sm font-medium text-blue-800">Description</span>
+                      <div class="flex items-center space-x-2 text-xs text-blue-600">
+                        <span class="inline-flex items-center">
+                          <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                          </svg>
+                          Describe your role and achievements
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                  <.input
+                    field={@form[:description]}
+                    type="textarea"
+                    rows="8"
+                    class="border-0 focus:ring-0 resize-none rounded-b-lg"
+                    placeholder="Describe your role, responsibilities, and key achievements at this position.
+
+Examples:
+• Developed and maintained web applications using React and Node.js
+• Led a team of 5 developers and improved delivery time by 30%
+• Implemented CI/CD pipelines that reduced deployment time from 2 hours to 15 minutes
+• Collaborated with product managers and designers to deliver user-focused features"
+                    required
+                  />
+                </div>
+              </div>
+
+              <!-- Technologies Section -->
+              <div class="bg-purple-50 rounded-lg p-6">
+                <h4 class="text-lg font-medium text-gray-900 mb-4 flex items-center">
+                  <svg class="w-5 h-5 text-purple-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                  </svg>
+                  Technologies & Skills
+                </h4>
+                <div class="bg-white rounded-lg border border-purple-200 p-4">
+                  <.input
+                    field={@form[:technologies]}
+                    type="textarea"
+                    rows="4"
+                    label="Technologies and Skills"
+                    placeholder="Enter technologies, programming languages, frameworks, and tools used in this role.
+
+Enter one per line, for example:
+React
+Node.js
+TypeScript
+PostgreSQL
+AWS
+Docker"
+                    help="List the main technologies, tools, and skills you used in this role (one per line)"
+                    class="font-mono text-sm"
+                  />
+                  <div class="mt-3 text-xs text-purple-600 bg-purple-100 rounded p-2">
+                    <strong>Tip:</strong> Enter each technology on a new line. Common examples: React, Vue.js, Python, JavaScript, PostgreSQL, AWS, Docker, Kubernetes, etc.
+                  </div>
+                </div>
+              </div>
+
+              <!-- Form Actions -->
+              <div class="flex justify-end space-x-3 pt-6 border-t border-gray-200">
+                <.link
+                  navigate={@live_action == :edit && @work_experience.id && ~p"/admin/work-experiences/#{@work_experience.id}" || ~p"/admin/work-experiences"}
+                  class="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                >
+                  <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                  </svg>
+                  Cancel
+                </.link>
+                <button
+                  type="submit"
+                  class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                >
+                  <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                  </svg>
+                  <%= if @live_action == :new, do: "Create Work Experience", else: "Update Work Experience" %>
+                </button>
+              </div>
+            </.form>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div> 
