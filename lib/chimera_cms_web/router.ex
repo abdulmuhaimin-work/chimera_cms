@@ -73,7 +73,7 @@ defmodule ChimeraCmsWeb.Router do
     live "/projects/new", ProjectsLive, :new
     live "/projects/:id/edit", ProjectsLive, :edit
     live "/projects/:id", ProjectsLive, :show
-    live "/work-experiences", WorkExperiencesLive, :index
+        live "/work-experiences", WorkExperiencesLive, :index
     live "/work-experiences/new", WorkExperiencesLive, :new
     live "/work-experiences/:id/edit", WorkExperiencesLive, :edit
     live "/work-experiences/:id", WorkExperiencesLive, :show

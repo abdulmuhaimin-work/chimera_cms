@@ -4,8 +4,7 @@
  * https://buunguyen.github.io/topbar
  * Copyright (c) 2021 Buu Nguyen
  */
-(function (window, document) {
-  "use strict";
+"use strict";
 
   // https://gist.github.com/paulirish/1579671
   (function () {
@@ -153,13 +152,5 @@
       },
     };
 
-  if (typeof module === "object" && typeof module.exports === "object") {
-    module.exports = topbar;
-  } else if (typeof define === "function" && define.amd) {
-    define(function () {
-      return topbar;
-    });
-  } else {
-    this.topbar = topbar;
-  }
-}.call(this, window, document));
+
+export default topbar;
