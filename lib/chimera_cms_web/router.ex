@@ -37,6 +37,8 @@ defmodule ChimeraCmsWeb.Router do
     get "/posts/:id", Api.PostController, :show
     get "/projects", Api.ProjectController, :index
     get "/projects/:id", Api.ProjectController, :show
+    get "/work-experiences", Api.WorkExperienceController, :index
+    get "/work-experiences/:id", Api.WorkExperienceController, :show
   end
 
   # Authentication routes
@@ -54,6 +56,7 @@ defmodule ChimeraCmsWeb.Router do
 
     resources "/posts", PostController
     resources "/projects", ProjectController
+    resources "/work-experiences", WorkExperienceController
     post "/upload", UploadController, :create
   end
 
