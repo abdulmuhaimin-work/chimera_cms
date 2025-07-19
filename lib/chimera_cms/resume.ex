@@ -8,6 +8,19 @@ defmodule ChimeraCms.Resume do
 
   alias ChimeraCms.Resume.WorkExperience
 
+  @pubsub_topic "resume_work_experiences"
+
+  def subscribe do
+    Phoenix.PubSub.subscribe(ChimeraCms.PubSub, @pubsub_topic)
+  end
+
+  defp broadcast({:ok, work_experience}, event) do
+    Phoenix.PubSub.broadcast(ChimeraCms.PubSub, @pubsub_topic, {event, work_experience})
+    {:ok, work_experience}
+  end
+
+  defp broadcast({:error, _reason} = error, _event), do: error
+
   @doc """
   Returns the list of work_experiences ordered by sort_order.
 
@@ -70,6 +83,7 @@ defmodule ChimeraCms.Resume do
     %WorkExperience{}
     |> WorkExperience.changeset(attrs)
     |> Repo.insert()
+    |> broadcast(:work_experience_created)
   end
 
   @doc """
@@ -88,6 +102,7 @@ defmodule ChimeraCms.Resume do
     work_experience
     |> WorkExperience.changeset(attrs)
     |> Repo.update()
+    |> broadcast(:work_experience_updated)
   end
 
   @doc """
@@ -104,6 +119,7 @@ defmodule ChimeraCms.Resume do
   """
   def delete_work_experience(%WorkExperience{} = work_experience) do
     Repo.delete(work_experience)
+    |> broadcast(:work_experience_deleted)
   end
 
   @doc """
