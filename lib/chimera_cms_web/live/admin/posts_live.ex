@@ -57,17 +57,34 @@ defmodule ChimeraCmsWeb.Admin.PostsLive do
   @impl true
   def handle_event("delete", %{"id" => id}, socket) do
     post = Blog.get_post!(id)
-    {:ok, _} = Blog.delete_post(post)
 
-    {:noreply, assign(socket, :posts, Blog.list_posts())}
+    case Blog.delete_post(post) do
+      {:ok, _} ->
+        {:noreply,
+         socket
+         |> put_flash(:info, "Post deleted successfully")
+         |> assign(:posts, Blog.list_posts())}
+
+      {:error, _changeset} ->
+        {:noreply, put_flash(socket, :error, "Failed to delete post")}
+    end
   end
 
   @impl true
   def handle_event("toggle_published", %{"id" => id}, socket) do
     post = Blog.get_post!(id)
-    {:ok, _} = Blog.update_post(post, %{published: !post.published})
 
-    {:noreply, assign(socket, :posts, Blog.list_posts())}
+    case Blog.update_post(post, %{published: !post.published}) do
+      {:ok, _} ->
+        action = if post.published, do: "unpublished", else: "published"
+        {:noreply,
+         socket
+         |> put_flash(:info, "Post #{action} successfully")
+         |> assign(:posts, Blog.list_posts())}
+
+      {:error, _changeset} ->
+        {:noreply, put_flash(socket, :error, "Failed to update post")}
+    end
   end
 
   @impl true
