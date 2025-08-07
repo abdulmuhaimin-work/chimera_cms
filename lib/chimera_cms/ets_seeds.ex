@@ -41,58 +41,151 @@ defmodule ChimeraCms.EtsSeeds do
   defp create_portfolio_projects do
     projects = [
       %{
+        id: 1,
         title: "Interactive Portfolio Website",
         description: "A responsive, interactive portfolio showcasing my work with dynamic layouts, animations, and advanced React components.",
-        overview: "This portfolio website is designed as both a showcase of my projects and a project itself. It features an interactive grid layout, custom animations, theme switching, and advanced React components.",
-        problem: "Traditional portfolio websites often present work in a static, non-interactive way that doesn't effectively demonstrate a developer's capabilities.",
-        solution: "I built this portfolio using React and Tailwind CSS with a focus on interactivity. Features include a draggable project grid, custom cursor effects, dark mode support, and animated transitions.",
-        outcome: "The result is a portfolio that not only presents my work effectively but also serves as a living demonstration of my technical skills and UX sensibilities.",
-        tags: ["React", "TailwindCSS", "Responsive Design", "React Grid Layout", "Custom Animations"],
-        tech_stack: ["React", "TailwindCSS", "React Grid Layout", "React Icons"],
+        overview: "This portfolio website is designed as both a showcase of my projects and a project itself. It features an interactive grid layout, custom animations, theme switching, and advanced React components to create an engaging user experience that demonstrates my frontend development capabilities.",
+        problem: "Traditional portfolio websites often present work in a static, non-interactive way that doesn't effectively demonstrate a developer's capabilities, especially in dynamic UI development and state management.",
+        solution: "I built this portfolio using React and Tailwind CSS with a focus on interactivity. Features include a draggable projects grid, custom cursor effects, dark mode support, lazy-loaded images, 3D animations, and animated transitions between sections.",
+        outcome: "The result is a portfolio that not only presents my work effectively but also serves as a living demonstration of my technical skills, UX sensibilities, and attention to detail in frontend development.",
+        tags: ["React", "TailwindCSS", "Responsive Design", "React Grid Layout", "3D Animations"],
+        tech_stack: ["React", "TailwindCSS", "React Grid Layout", "ThreeJS"],
         image: "/portfolioweb.png",
         repo_url: "https://github.com/abdulmuhaimin-work/Project-Chimera",
         live_url: "https://abdulmuhaimin.my",
         timeline: "2 months",
-        role: "Full Stack Developer",
+        role: "Full-stack Developer",
         client: "Personal Project",
         featured: true,
-        sort_order: 1
+        sort_order: 1,
+        inserted_at: "2025-07-20T08:53:55Z",
+        updated_at: "2025-07-20T08:53:55Z"
       },
       %{
-        title: "E-Commerce Platform",
-        description: "A full-featured e-commerce platform with advanced search, payment integration, and admin dashboard.",
-        overview: "A comprehensive e-commerce solution built with modern web technologies, featuring product management, order processing, and customer management.",
-        problem: "Small businesses need affordable, customizable e-commerce solutions that can scale with their growth.",
-        solution: "Built a modular e-commerce platform using Phoenix LiveView for real-time updates, with integrated payment processing and inventory management.",
-        outcome: "Successfully deployed for multiple small businesses, processing thousands of orders monthly with 99.9% uptime.",
-        tags: ["Phoenix", "LiveView", "E-commerce", "Payment Processing", "Inventory Management"],
-        tech_stack: ["Elixir", "Phoenix", "LiveView", "TailwindCSS", "PostgreSQL"],
-        image: "/ecommerce.png",
-        repo_url: "https://github.com/abdulmuhaimin-work/ecommerce-platform",
-        live_url: "https://shop-demo.example.com",
-        timeline: "4 months",
-        role: "Lead Developer",
-        client: "Various Small Businesses",
+        id: 2,
+        title: "SERV Sfera Auto",
+        description: "A comprehensive web app for auto workshop management with secure authentication and role-based access control",
+        overview: "SERV Sfera Auto is a comprehensive web application designed to streamline the daily operations of auto workshop owners and their customers. The platform provides tools for appointment scheduling, service tracking, inventory management, and customer communication. The system features secure authentication and role-based access control to protect sensitive business and customer data.",
+        problem: "Auto workshop owners faced challenges with manual booking systems, difficulty tracking service history, and inefficient inventory management, leading to lost revenue and customer dissatisfaction.",
+        solution: "We developed a centralized platform that digitizes all aspects of workshop management, allowing owners to track appointments, manage inventory, and communicate with customers through a single interface.",
+        outcome: "The application resulted in a reduction in administrative tasks, improvement in customer satisfaction, and an increase in revenue for workshop owners through better inventory management and appointment scheduling.",
+        tags: ["ReactJS", "Firebase", "Bootstrap", "Cloudfunction"],
+        tech_stack: ["ReactJS", "Firebase", "Bootstrap", "Cloudfunction"],
+        image: "/SferaAuto.PNG",
+        repo_url: nil,
+        live_url: "https://business.sfera.ai",
+        timeline: "6 months",
+        role: "Frontend Developer",
+        client: "Sfera Auto",
         featured: true,
-        sort_order: 2
+        sort_order: 2,
+        inserted_at: "2025-07-20T08:53:55Z",
+        updated_at: "2025-07-20T08:53:55Z"
       },
       %{
-        title: "Real-time Chat Application",
-        description: "A scalable real-time chat application with rooms, direct messaging, and file sharing capabilities.",
-        overview: "A modern chat application supporting multiple chat rooms, private messaging, file uploads, and real-time notifications.",
-        problem: "Need for a custom chat solution with specific business requirements not met by existing platforms.",
-        solution: "Developed using Phoenix Channels for WebSocket connections, with presence tracking and message persistence.",
-        outcome: "Deployed for internal company use, supporting 500+ concurrent users with sub-100ms message delivery.",
-        tags: ["Phoenix", "WebSockets", "Real-time", "Chat", "File Upload"],
-        tech_stack: ["Elixir", "Phoenix", "Phoenix Channels", "React", "TailwindCSS"],
-        image: "/chat-app.png",
-        repo_url: "https://github.com/abdulmuhaimin-work/chat-app",
-        live_url: "https://chat.example.com",
+        id: 3,
+        title: "Stripe Payment Server",
+        description: "Back-end API for the payment system to integrate the payment of our various apps with the Stripe payment system.",
+        overview: "A centralized payment processing server that integrates multiple company applications with Stripe, handling transactions, subscriptions, and payment analytics in a secure environment.",
+        problem: "The company had multiple applications but no ways to subscribe or buy their product yet.",
+        solution: "We created a unified payment API that interfaces with Stripe, allowing all company applications to process payments through a single, secure channel with consistent behavior and centralized reporting.",
+        outcome: "The system has processed transactions, reduced payment-related customer support tickets, and simplified financial reconciliation processes.",
+        tags: ["ExpressJS", "NodeJS", "MongoDB", "Stripe", "Payment"],
+        tech_stack: ["ExpressJS", "NodeJS", "MongoDB"],
+        image: "/project-2.jpg",
+        repo_url: nil,
+        live_url: nil,
         timeline: "3 months",
         role: "Backend Developer",
-        client: "Tech Startup",
+        client: "Internal Project",
         featured: false,
-        sort_order: 3
+        sort_order: 3,
+        inserted_at: "2025-07-20T08:53:56Z",
+        updated_at: "2025-07-20T08:53:56Z"
+      },
+      %{
+        id: 4,
+        title: "Autonomous Vehicle Dashboard",
+        description: "Tasked with developing the dashboard for displaying data that was pulled from our autonomous vehicle",
+        overview: "A real-time monitoring dashboard for autonomous vehicle data, providing engineers and operators with critical insights into vehicle performance, sensor readings, and system health.",
+        problem: "Engineers needed a way to visualize and analyze complex data streams from autonomous vehicles during testing, with the ability to spot anomalies and issues in real-time.",
+        solution: "We developed a responsive dashboard that processes and visualizes telemetry data from multiple vehicle sensors, that is uploaded to the cloud every 10 seconds.",
+        outcome: "The dashboard improved debugging efficiency, and became an essential tool for the autonomous vehicle development team.",
+        tags: ["ReactJS", "Data Visualization", "Autonomous Vehicle"],
+        tech_stack: ["ReactJS"],
+        image: "/project-3.jpg",
+        repo_url: nil,
+        live_url: nil,
+        timeline: "4 months",
+        role: "Frontend Developer",
+        client: "Automotive R&D Department",
+        featured: false,
+        sort_order: 4,
+        inserted_at: "2025-07-20T08:53:57Z",
+        updated_at: "2025-07-20T08:53:57Z"
+      },
+      %{
+        id: 5,
+        title: "Forklift Management System Integration",
+        description: "Project scope is to integrate data from our system to client old system",
+        overview: "A middleware solution that bridges the new modern cloud-based forklift management software with a client's legacy warehouse management system, enabling seamless data flow and migration.",
+        problem: "The client needed to maintain their existing warehouse management system while migrating to a new system that is more efficient,modern, and has more features.",
+        solution: "We developed a custom integration layer that translates data bidirectionally between systems, allowing the client to leverage new forklift capabilities without replacing their core infrastructure.",
+        outcome: "The integration increased warehouse efficiency, provided previously unavailable analytics on forklift utilization, and extended the useful life of the client's existing systems.",
+        tags: ["React", "Firebase", "Integration", "Middleware"],
+        tech_stack: ["React", "Firebase"],
+        image: "/project-4.jpg",
+        repo_url: nil,
+        live_url: nil,
+        timeline: "5 months",
+        role: "Integration Specialist",
+        client: "Manufacturing Company",
+        featured: false,
+        sort_order: 5,
+        inserted_at: "2025-07-20T08:53:57Z",
+        updated_at: "2025-07-20T08:53:57Z"
+      },
+      %{
+        id: 6,
+        title: "A Simple Math Quiz Website",
+        description: "A simple math quiz website that allows users to answer math questions and see their result.",
+        overview: "An interactive math quiz application designed to help users practice basic arithmetic skills in an engaging format, with instant feedback and score tracking.",
+        problem: "Many existing math practice tools are either too complex for beginners or lack engaging elements to maintain user interest, particularly for younger students.",
+        solution: "We created a straightforward yet visually appealing quiz application that focuses on fundamental math operations with progressive difficulty levels and immediate feedback.",
+        outcome: "The application was successfully completed within the one-week time constraint and received positive feedback from users for its simplicity and educational value.",
+        tags: ["HTML", "CSS", "JavaScript", "Education"],
+        tech_stack: ["HTML", "CSS", "JavaScript"],
+        image: "/math.png",
+        repo_url: "https://github.com/abdulmuhaimin-work/test-bridge",
+        live_url: "https://test-bridge-seven.vercel.app/",
+        timeline: "1 week",
+        role: "Developer",
+        client: "Personal Project",
+        featured: false,
+        sort_order: 7,
+        inserted_at: "2025-07-20T08:53:58Z",
+        updated_at: "2025-07-20T08:53:58Z"
+      },
+      %{
+        id: 7,
+        title: "Sanatoria",
+        description: "A horror game developed in Unity during a 1-month game jam at REKA.",
+        overview: "Sanatoria is an atmospheric horror puzzle game that immerses players in a tense, psychological experience. Developed during a one-month game jam at REKA, the game demonstrates rapid prototyping, 3D environment design, and gameplay mechanics that create suspense and fear.",
+        problem: "Creating an engaging horror puzzle experience requires carefully crafted puzzles, atmospheric sound design, and visual elements that work together to create tension and fear in players.",
+        solution: "We focused on creating a psychologically tense atmosphere through strategic lighting, immersive sound design, and unpredictable NPCs. The game was successfully completed within the one-month time constraint and received positive feedback from game jam judges and players for its atmosphere and tension-building mechanics.",
+        outcome: "The game was successfully completed within the one-month time constraint and received positive feedback from game jam judges and players for its atmosphere and tension-building mechanics.",
+        tags: ["Unity", "C#", "3D", "Game Development"],
+        tech_stack: ["Unity", "C#"],
+        image: "/sanatoria.jpg",
+        repo_url: nil,
+        live_url: "https://drive.google.com/drive/folders/1Snn7Z5bUt7SyO0eUhI5uYKJAvqQQbMm5?usp=sharing",
+        timeline: "1 month",
+        role: "Game Developer",
+        client: "Game Jam Project",
+        featured: false,
+        sort_order: 8,
+        inserted_at: "2025-07-20T08:54:04Z",
+        updated_at: "2025-07-20T08:54:04Z"
       }
     ]
 
@@ -187,40 +280,77 @@ defmodule ChimeraCms.EtsSeeds do
   defp create_work_experiences do
     experiences = [
       %{
-        title: "Senior Software Engineer",
-        company: "TechCorp Solutions",
-        period: "2022 - Present",
-        description: """
-        Leading a team of 5 developers in building scalable web applications using Elixir and Phoenix.
-        Responsible for architecture decisions, code reviews, and mentoring junior developers.
-        Successfully delivered 3 major projects on time and under budget.
-        """,
-        technologies: ["Elixir", "Phoenix", "PostgreSQL", "React", "Docker", "AWS"],
-        sort_order: 1
+        id: 2,
+        title: "Consultant, Full Stack Developer",
+        company: "Bestinet Sdn Bhd, Kuala Lumpur",
+        period: "August 2024 – Present",
+        description: "- Developed and maintained web applications using NextJS, Typescript and TailwindCSS. \n- Implemented integration with microservices API which is in Java Springboot. Planned and implemented new features and improvements. \n- Maintain/update/fix web pages using Drupal CMS.\n- Automated build, test and deployment of pipelines using Gitlab and Jenkins.\n- Using Agile methodology for daily workflow with team",
+        technologies: [
+          "NextJS",
+          "TypeScript",
+          "TailwindCSS",
+          "Drupal CMS",
+          "GitLab",
+          "Jenkin",
+          "Docker"
+        ],
+        sort_order: 1,
+        inserted_at: "2025-07-20T08:50:14Z",
+        updated_at: "2025-07-22T07:17:25Z"
       },
       %{
-        title: "Full Stack Developer",
-        company: "StartupXYZ",
-        period: "2020 - 2022",
-        description: """
-        Developed the core platform features for a fast-growing SaaS startup.
-        Built RESTful APIs, implemented real-time features, and created responsive user interfaces.
-        Contributed to scaling the platform from 100 to 10,000+ users.
-        """,
-        technologies: ["Node.js", "Express", "MongoDB", "React", "Redis", "Kubernetes"],
-        sort_order: 2
+        id: 3,
+        title: "Mid-level Developer",
+        company: "Nematix Sdn Bhd, Seri Kembangan",
+        period: "August 2023 – August 2024",
+        description: "Built responsive web applications using Typescript and React. Collaborated with designers to implement user-friendly interfaces. Developed Interactive Data Visualization dashboards using React Charts and CubeJS. Implemented GIS related features using Google Maps API and Kinetica.",
+        technologies: [
+          "React",
+          "TypeScript",
+          "CubeJS",
+          "Google Maps API",
+          "Kinetica",
+          "Supertokens",
+          "Supabase"
+        ],
+        sort_order: 2,
+        inserted_at: "2025-07-20T08:50:14Z",
+        updated_at: "2025-07-20T08:50:14Z"
       },
       %{
-        title: "Frontend Developer",
-        company: "Digital Agency Pro",
-        period: "2018 - 2020",
-        description: """
-        Created responsive websites and web applications for various clients.
-        Specialized in React development and modern CSS frameworks.
-        Collaborated closely with designers to implement pixel-perfect designs.
-        """,
-        technologies: ["React", "JavaScript", "HTML5", "CSS3", "Sass", "Webpack"],
-        sort_order: 3
+        id: 4,
+        title: "Front End Developer",
+        company: "REKA Inisiatif Sdn Bhd, Kuala Lumpur",
+        period: "September 2021 – August 2023",
+        description: "Developed and maintained web applications using ReactJS and Bootstrap. Implemented authentication and authorization using Firebase Auth. Developed and maintained RESTful APIs using Firebase Cloud Functions. Developed backend services using NodeJS and Express.",
+        technologies: [
+          "React",
+          "Bootstrap",
+          "Firebase",
+          "NodeJS",
+          "Express",
+          "Stripe",
+          "MongoDB"
+        ],
+        sort_order: 3,
+        inserted_at: "2025-07-20T08:50:15Z",
+        updated_at: "2025-07-20T08:50:15Z"
+      },
+      %{
+        id: 5,
+        title: "Software Developer",
+        company: "Elm Lab Sdn Bhd, Beranang",
+        period: "February 2020 – April 2020",
+        description: "Heavily involved in the development of the landing page to onboard new users of the system. Developed the front end interface and integrated with RESTful API. Ensured deliverables and tasks were completed on time for project delivery date.",
+        technologies: [
+          "HTML",
+          "CSS",
+          "JavaScript",
+          "RESTful API"
+        ],
+        sort_order: 4,
+        inserted_at: "2025-07-20T08:50:19Z",
+        updated_at: "2025-07-20T08:50:19Z"
       }
     ]
 
