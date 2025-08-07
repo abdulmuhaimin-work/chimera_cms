@@ -1,5 +1,6 @@
 defmodule ChimeraCmsWeb.Router do
   use ChimeraCmsWeb, :router
+  import Phoenix.LiveDashboard.Router
 
   pipeline :browser do
     plug :accepts, ["html"]
@@ -79,6 +80,13 @@ defmodule ChimeraCmsWeb.Router do
     live "/work-experiences/new", WorkExperiencesLive, :new
     live "/work-experiences/:id/edit", WorkExperiencesLive, :edit
     live "/work-experiences/:id", WorkExperiencesLive, :show
+    live_dashboard "/dashboard", metrics: ChimeraCmsWeb.Telemetry
+    # forward "/mailbox", Plug.Swoosh.MailboxPreview
+  end
+
+  scope "/admin" do
+    pipe_through [:browser, :authenticated, :admin_layout]
+    forward "/mailbox", Plug.Swoosh.MailboxPreview
   end
 
   # Enable LiveDashboard and Swoosh mailbox preview in development
@@ -88,13 +96,11 @@ defmodule ChimeraCmsWeb.Router do
     # If your application does not have an admins-only section yet,
     # you can use Plug.BasicAuth to set up some basic authentication
     # as long as you are also using SSL (which you should anyway).
-    import Phoenix.LiveDashboard.Router
+    # import Phoenix.LiveDashboard.Router
 
     scope "/dev" do
       pipe_through :browser
 
-      live_dashboard "/dashboard", metrics: ChimeraCmsWeb.Telemetry
-      forward "/mailbox", Plug.Swoosh.MailboxPreview
     end
   end
 end

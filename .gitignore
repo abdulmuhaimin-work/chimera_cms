@@ -41,3 +41,5 @@ npm-debug.log
 .env.production
 .env.development
 
+/priv/data/
+
