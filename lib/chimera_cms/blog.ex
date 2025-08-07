@@ -3,8 +3,7 @@ defmodule ChimeraCms.Blog do
   The Blog context.
   """
 
-  import Ecto.Query, warn: false
-  alias ChimeraCms.Repo
+  alias ChimeraCms.EtsRepo, as: Repo
   alias ChimeraCms.Blog.Post
 
   @pubsub_topic "blog_posts"
@@ -126,14 +125,15 @@ defmodule ChimeraCms.Blog do
   Returns the list of published posts.
   """
   def list_published_posts do
-    from(p in Post, where: p.published == true, order_by: [desc: p.published_at])
-    |> Repo.all()
+    Repo.all(Post)
+    |> Enum.filter(& &1.published)
+    |> Enum.sort_by(& &1.published_at, {:desc, DateTime})
   end
 
   @doc """
   Gets a single post by slug.
   """
   def get_post_by_slug(slug) do
-    Repo.get_by(Post, slug: slug)
+    Repo.get_by(Post, :slug, slug)
   end
 end

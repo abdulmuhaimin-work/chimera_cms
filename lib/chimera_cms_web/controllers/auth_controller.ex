@@ -4,8 +4,9 @@ defmodule ChimeraCmsWeb.AuthController do
   alias ChimeraCms.Accounts
 
   def login_form(conn, _params) do
-    changeset = Accounts.change_user_login(%{})
-    render(conn, :login_form, changeset: changeset)
+    # Use a simple map instead of changeset to avoid FormData protocol issues
+    form_data = %{"email" => "", "password" => ""}
+    render(conn, :login_form, form_data: form_data)
   end
 
   def login(conn, %{"user" => user_params}) do
@@ -20,12 +21,12 @@ defmodule ChimeraCmsWeb.AuthController do
         |> redirect(to: ~p"/admin")
 
       {:error, :invalid_credentials} ->
-        changeset = Accounts.change_user_login(user_params)
-        |> Ecto.Changeset.add_error(:email, "Invalid email or password")
+        # Use form data with error message instead of changeset
+        form_data = Map.merge(%{"email" => "", "password" => ""}, user_params)
 
         conn
         |> put_flash(:error, "Invalid email or password")
-        |> render(:login_form, changeset: changeset)
+        |> render(:login_form, form_data: form_data)
     end
   end
 

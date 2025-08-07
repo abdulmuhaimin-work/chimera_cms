@@ -5,18 +5,7 @@ if Code.ensure_loaded?(Dotenv) do
   Dotenv.load()
 end
 
-# Configure your database
-config :chimera_cms, ChimeraCms.Repo,
-  username: System.get_env("DB_USERNAME") || "postgres",
-  password: System.get_env("DB_PASSWORD") || "zxcv5653",
-  hostname: System.get_env("DB_HOSTNAME") || "localhost",
-  database: System.get_env("DB_NAME") || "chimera_cms_dev",
-  stacktrace: true,
-  show_sensitive_data_on_connection_error: true,
-  pool_size: 20,
-  queue_target: 5000,
-  queue_interval: 1000,
-  timeout: 30000
+# Database configuration removed - using ETS storage
 
 # For development, we disable any cache and enable
 # debugging and code reloading.

@@ -3,8 +3,7 @@ defmodule ChimeraCms.Portfolio do
   The Portfolio context.
   """
 
-  import Ecto.Query, warn: false
-  alias ChimeraCms.Repo
+  alias ChimeraCms.EtsRepo, as: Repo
   alias ChimeraCms.Portfolio.Project
 
   @pubsub_topic "portfolio_projects"
@@ -30,8 +29,13 @@ defmodule ChimeraCms.Portfolio do
 
   """
   def list_projects do
-    from(p in Project, order_by: [asc: p.sort_order, desc: p.inserted_at])
-    |> Repo.all()
+    Repo.all(Project)
+    |> Enum.sort_by(fn p -> {p.sort_order || 0, p.inserted_at} end, fn {a_sort, a_time}, {b_sort, b_time} ->
+      cond do
+        a_sort != b_sort -> a_sort <= b_sort
+        true -> DateTime.compare(a_time, b_time) == :gt
+      end
+    end)
   end
 
   @doc """

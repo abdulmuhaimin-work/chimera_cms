@@ -3,8 +3,7 @@ defmodule ChimeraCms.Resume do
   The Resume context.
   """
 
-  import Ecto.Query, warn: false
-  alias ChimeraCms.Repo
+  alias ChimeraCms.EtsRepo, as: Repo
 
   alias ChimeraCms.Resume.WorkExperience
 
@@ -31,8 +30,13 @@ defmodule ChimeraCms.Resume do
 
   """
   def list_work_experiences do
-    from(w in WorkExperience, order_by: [asc: w.sort_order, desc: w.inserted_at])
-    |> Repo.all()
+    Repo.all(WorkExperience)
+    |> Enum.sort_by(fn w -> {w.sort_order || 0, w.inserted_at} end, fn {a_sort, a_time}, {b_sort, b_time} ->
+      cond do
+        a_sort != b_sort -> a_sort <= b_sort
+        true -> DateTime.compare(a_time, b_time) == :gt
+      end
+    end)
   end
 
   @doc """

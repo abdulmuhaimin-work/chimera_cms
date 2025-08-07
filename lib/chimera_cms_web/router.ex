@@ -29,6 +29,8 @@ defmodule ChimeraCmsWeb.Router do
     get "/", PageController, :home
   end
 
+
+
   # Public API routes
   scope "/api", ChimeraCmsWeb do
     pipe_through :api

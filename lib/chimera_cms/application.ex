@@ -9,7 +9,7 @@ defmodule ChimeraCms.Application do
   def start(_type, _args) do
     children = [
       ChimeraCmsWeb.Telemetry,
-      ChimeraCms.Repo,
+      ChimeraCms.EtsRepo,
       {DNSCluster, query: Application.get_env(:chimera_cms, :dns_cluster_query) || :ignore},
       {Phoenix.PubSub, name: ChimeraCms.PubSub},
       # Start the Finch HTTP client for sending emails

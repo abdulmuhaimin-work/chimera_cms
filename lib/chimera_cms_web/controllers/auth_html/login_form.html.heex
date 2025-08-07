@@ -9,28 +9,32 @@
       </p>
     </div>
     
-    <.form :let={f} for={@changeset} action={~p"/auth/login"} class="mt-8 space-y-6">
-      <input type="hidden" name="remember" value="true" />
+    <form action={~p"/auth/login"} method="post" class="mt-8 space-y-6">
+      <input type="hidden" name="_csrf_token" value={Phoenix.Controller.get_csrf_token()} />
       <div class="rounded-md shadow-sm -space-y-px">
         <div>
-          <label for="email" class="sr-only">Email address</label>
-          <.input
-            field={f[:email]}
+          <label for="user_email" class="sr-only">Email address</label>
+          <input
+            id="user_email"
+            name="user[email]"
             type="email"
             autocomplete="email"
             required
             placeholder="Email address"
+            value={@form_data["email"]}
             class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
           />
         </div>
         <div>
-          <label for="password" class="sr-only">Password</label>
-          <.input
-            field={f[:password]}
+          <label for="user_password" class="sr-only">Password</label>
+          <input
+            id="user_password"
+            name="user[password]"
             type="password"
             autocomplete="current-password"
             required
             placeholder="Password"
+            value={@form_data["password"]}
             class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
           />
         </div>
@@ -49,6 +53,6 @@
           Sign in
         </button>
       </div>
-    </.form>
+    </form>
   </div>
 </div> 

@@ -8,7 +8,6 @@
 import Config
 
 config :chimera_cms,
-  ecto_repos: [ChimeraCms.Repo],
   generators: [timestamp_type: :utc_datetime]
 
 # Configures the endpoint

@@ -46,7 +46,10 @@ defmodule ChimeraCmsWeb.Admin.ProjectsLive do
 
   defp apply_action(socket, :edit, %{"id" => id}) do
     project = Portfolio.get_project!(id)
-    changeset = Portfolio.change_project(project)
+
+    # Convert arrays back to strings for form display
+    project_for_form = convert_arrays_to_strings(project)
+    changeset = Portfolio.change_project(project_for_form)
 
     socket
     |> assign(:page_title, "Edit Project")
@@ -93,6 +96,9 @@ defmodule ChimeraCmsWeb.Admin.ProjectsLive do
     # Handle file upload if present
     project_params = handle_file_upload(socket, project_params)
 
+    # Preprocess array fields (tags and tech_stack)
+    project_params = preprocess_array_fields(project_params)
+
     case socket.assigns.live_action do
       :new -> create_project(socket, project_params)
       :edit -> update_project(socket, project_params)
@@ -101,6 +107,9 @@ defmodule ChimeraCmsWeb.Admin.ProjectsLive do
 
   @impl true
   def handle_event("validate", %{"project" => project_params}, socket) do
+    # Preprocess array fields (tags and tech_stack)
+    project_params = preprocess_array_fields(project_params)
+
     changeset =
       socket.assigns.project
       |> Portfolio.change_project(project_params)
@@ -174,6 +183,10 @@ defmodule ChimeraCmsWeb.Admin.ProjectsLive do
       [] ->
         project_params
 
+      {[], []} ->
+        # No uploaded files (empty tuple from uploaded_entries)
+        project_params
+
       [entry] ->
         case consume_uploaded_entry(socket, entry, fn %{path: path} ->
           # Generate unique filename
@@ -205,4 +218,49 @@ defmodule ChimeraCmsWeb.Admin.ProjectsLive do
   defp humanize_upload_error(:too_many_files), do: "You can only upload one file"
   defp humanize_upload_error(:not_accepted), do: "File type not supported. Please use PNG, JPG, GIF, or WebP"
   defp humanize_upload_error(error), do: "Upload error: #{error}"
+
+  # Preprocess array fields - convert comma-separated strings to arrays
+  defp preprocess_array_fields(params) do
+    params
+    |> convert_to_array("tags")
+    |> convert_to_array("tech_stack")
+  end
+
+  # Convert a comma-separated string field to an array
+  defp convert_to_array(params, field_name) do
+    case Map.get(params, field_name) do
+      value when is_binary(value) and value != "" ->
+        # Split by comma and clean up whitespace
+        array_value =
+          value
+          |> String.split(",")
+          |> Enum.map(&String.trim/1)
+          |> Enum.reject(&(&1 == ""))
+
+        Map.put(params, field_name, array_value)
+
+      _ ->
+        params
+    end
+  end
+
+  # Helper functions for template display - safely convert to arrays
+  defp safe_tags_array(nil), do: []
+  defp safe_tags_array(tags) when is_list(tags), do: tags
+  defp safe_tags_array(tags) when is_binary(tags), do: String.split(tags, ",") |> Enum.map(&String.trim/1)
+
+  defp safe_tech_stack_array(nil), do: []
+  defp safe_tech_stack_array(tech_stack) when is_list(tech_stack), do: tech_stack
+  defp safe_tech_stack_array(tech_stack) when is_binary(tech_stack), do: String.split(tech_stack, ",") |> Enum.map(&String.trim/1)
+
+  # Convert arrays back to comma-separated strings for form editing
+  defp convert_arrays_to_strings(project) do
+    project
+    |> Map.update(:tags, nil, &array_to_string/1)
+    |> Map.update(:tech_stack, nil, &array_to_string/1)
+  end
+
+  defp array_to_string(nil), do: nil
+  defp array_to_string(value) when is_list(value), do: Enum.join(value, ", ")
+  defp array_to_string(value), do: value
 end

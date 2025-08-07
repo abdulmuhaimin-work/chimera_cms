@@ -45,7 +45,10 @@ defmodule ChimeraCmsWeb.Admin.PostsLive do
 
   defp apply_action(socket, :edit, %{"id" => id}) do
     post = Blog.get_post!(id)
-    changeset = Blog.change_post(post)
+
+    # Convert arrays back to strings for form display
+    post_for_form = convert_arrays_to_strings(post)
+    changeset = Blog.change_post(post_for_form)
 
     socket
     |> assign(:page_title, "Edit Post")
@@ -89,6 +92,9 @@ defmodule ChimeraCmsWeb.Admin.PostsLive do
 
   @impl true
   def handle_event("save", %{"post" => post_params}, socket) do
+    # Preprocess array fields (tags)
+    post_params = preprocess_array_fields(post_params)
+
     case socket.assigns.live_action do
       :new -> create_post(socket, post_params)
       :edit -> update_post(socket, post_params)
@@ -97,6 +103,9 @@ defmodule ChimeraCmsWeb.Admin.PostsLive do
 
   @impl true
   def handle_event("validate", %{"post" => post_params}, socket) do
+    # Preprocess array fields (tags)
+    post_params = preprocess_array_fields(post_params)
+
     changeset =
       socket.assigns.post
       |> Blog.change_post(post_params)
@@ -158,4 +167,41 @@ defmodule ChimeraCmsWeb.Admin.PostsLive do
       Enum.reject(posts, fn p -> p.id == post.id end)
     end)}
   end
+
+  # Helper function for template display - safely convert tags to array
+  defp safe_tags_array(nil), do: []
+  defp safe_tags_array(tags) when is_list(tags), do: tags
+  defp safe_tags_array(tags) when is_binary(tags), do: String.split(tags, ",") |> Enum.map(&String.trim/1)
+
+  # Convert arrays back to comma-separated strings for form editing
+  defp convert_arrays_to_strings(post) do
+    Map.update(post, :tags, nil, &array_to_string/1)
+  end
+
+  # Preprocess array fields - convert comma-separated strings to arrays
+  defp preprocess_array_fields(params) do
+    convert_to_array(params, "tags")
+  end
+
+  # Convert a comma-separated string field to an array
+  defp convert_to_array(params, field_name) do
+    case Map.get(params, field_name) do
+      value when is_binary(value) and value != "" ->
+        # Split by comma and clean up whitespace
+        array_value =
+          value
+          |> String.split(",")
+          |> Enum.map(&String.trim/1)
+          |> Enum.reject(&(&1 == ""))
+
+        Map.put(params, field_name, array_value)
+
+      _ ->
+        params
+    end
+  end
+
+  defp array_to_string(nil), do: nil
+  defp array_to_string(value) when is_list(value), do: Enum.join(value, ", ")
+  defp array_to_string(value), do: value
 end

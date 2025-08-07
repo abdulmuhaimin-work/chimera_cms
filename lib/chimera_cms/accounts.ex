@@ -3,8 +3,7 @@ defmodule ChimeraCms.Accounts do
   The Accounts context.
   """
 
-  import Ecto.Query, warn: false
-  alias ChimeraCms.Repo
+  alias ChimeraCms.EtsRepo, as: Repo
   alias ChimeraCms.Accounts.User
 
   def change_user_login(attrs) do
@@ -135,7 +134,7 @@ defmodule ChimeraCms.Accounts do
   Authenticates a user by email and password
   """
   def authenticate_user(email, password) do
-    user = Repo.get_by(User, email: email)
+    user = Repo.get_by(User, :email, email)
 
     cond do
       user && user.active && User.verify_password(user, password) ->
@@ -153,7 +152,7 @@ defmodule ChimeraCms.Accounts do
   Gets a user by email
   """
   def get_user_by_email(email) do
-    Repo.get_by(User, email: email)
+    Repo.get_by(User, :email, email)
   end
 
   @doc """
