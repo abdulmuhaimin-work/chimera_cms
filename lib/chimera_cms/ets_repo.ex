@@ -235,12 +235,15 @@ defmodule ChimeraCms.EtsRepo do
     if all_empty do
       Logger.info("ETS tables are empty, auto-seeding initial data...")
 
-      # Run seeding in a separate task to avoid blocking startup
-      Task.start(fn ->
-        # Small delay to ensure ETS repo is fully initialized
-        Process.sleep(100)
+      # Run seeding synchronously to ensure data is available before accepting requests
+      # This prevents the issue where API returns empty arrays on first request after wake-up
+      try do
         ChimeraCms.EtsSeeds.run()
-      end)
+        Logger.info("✅ Initial data seeding completed successfully")
+      rescue
+        error ->
+          Logger.error("❌ Failed to seed initial data: #{inspect(error)}")
+      end
     end
   end
 
