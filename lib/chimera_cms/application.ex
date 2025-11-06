@@ -9,9 +9,10 @@ defmodule ChimeraCms.Application do
   def start(_type, _args) do
     children = [
       ChimeraCmsWeb.Telemetry,
+      # PubSub must start before EtsRepo because seeding uses broadcast
+      {Phoenix.PubSub, name: ChimeraCms.PubSub},
       ChimeraCms.EtsRepo,
       {DNSCluster, query: Application.get_env(:chimera_cms, :dns_cluster_query) || :ignore},
-      {Phoenix.PubSub, name: ChimeraCms.PubSub},
       # Start the Finch HTTP client for sending emails
       {Finch, name: ChimeraCms.Finch},
       # Start a worker by calling: ChimeraCms.Worker.start_link(arg)
