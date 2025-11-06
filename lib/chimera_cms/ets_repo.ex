@@ -143,11 +143,12 @@ defmodule ChimeraCms.EtsRepo do
     unless data_exists do
       Logger.info("📋 Creating empty tables...")
       create_empty_tables()
-
-      # Auto-seed if tables are empty
-      Logger.info("🌱 Seeding empty tables...")
-      seed_if_empty()
     end
+
+    # Check if tables are empty and seed if needed
+    # This runs even if data was loaded from disk, in case the saved data was empty
+    Logger.info("🌱 Checking if seeding is needed...")
+    seed_if_empty()
 
     # Log table sizes for debugging
     Enum.each(@tables, fn table ->
