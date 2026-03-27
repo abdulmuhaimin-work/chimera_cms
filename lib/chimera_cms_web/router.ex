@@ -16,6 +16,14 @@ defmodule ChimeraCmsWeb.Router do
     plug Corsica, origins: ["http://localhost:3000", "http://localhost:5173", "http://localhost:4173", "https://abdulmuhaimin.my"]
   end
 
+  # Public GET /api/* only — do not add to authenticated /api/admin
+  pipeline :public_api_cache do
+    plug ChimeraCmsWeb.Plugs.PublicCache,
+      max_age: 60,
+      s_maxage: 300,
+      stale_while_revalidate: 600
+  end
+
   pipeline :authenticated do
     plug ChimeraCmsWeb.Auth.Pipeline
   end
@@ -34,7 +42,7 @@ defmodule ChimeraCmsWeb.Router do
 
   # Public API routes
   scope "/api", ChimeraCmsWeb do
-    pipe_through :api
+    pipe_through [:api, :public_api_cache]
 
     get "/posts", Api.PostController, :index
     get "/posts/:id", Api.PostController, :show
