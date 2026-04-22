@@ -139,8 +139,10 @@ defmodule ChimeraCms.Accounts do
     cond do
       user && user.active && User.verify_password(user, password) ->
         {:ok, user}
+
       user ->
         {:error, :invalid_credentials}
+
       true ->
         # Run a dummy hash to prevent timing attacks
         Pbkdf2.no_user_verify()

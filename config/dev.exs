@@ -20,7 +20,9 @@ config :chimera_cms, ChimeraCmsWeb.Endpoint,
   check_origin: false,
   code_reloader: true,
   debug_errors: true,
-  secret_key_base: System.get_env("SECRET_KEY_BASE") || "Ejlx60zyzhQSwsmqZxCDg2bqmap47zLWmIZ3kt6ZROL/L6ca7FuwT0P0b15/k17/",
+  secret_key_base:
+    System.get_env("SECRET_KEY_BASE") ||
+      "Ejlx60zyzhQSwsmqZxCDg2bqmap47zLWmIZ3kt6ZROL/L6ca7FuwT0P0b15/k17/",
   watchers: [
     esbuild: {Esbuild, :install_and_run, [:default, ~w(--sourcemap=inline --watch)]},
     tailwind: {Tailwind, :install_and_run, [:default, ~w(--watch)]}

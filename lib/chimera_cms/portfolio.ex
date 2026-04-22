@@ -30,7 +30,8 @@ defmodule ChimeraCms.Portfolio do
   """
   def list_projects do
     Repo.all(Project)
-    |> Enum.sort_by(fn p -> {p.sort_order || 0, p.inserted_at} end, fn {a_sort, a_time}, {b_sort, b_time} ->
+    |> Enum.sort_by(fn p -> {p.sort_order || 0, p.inserted_at} end, fn {a_sort, a_time},
+                                                                       {b_sort, b_time} ->
       cond do
         a_sort != b_sort -> a_sort <= b_sort
         true -> DateTime.compare(a_time, b_time) == :gt
@@ -122,11 +123,19 @@ defmodule ChimeraCms.Portfolio do
   """
   def delete_project(%Project{} = project) do
     result = Repo.delete(project)
+
     case result do
       {:ok, deleted_project} ->
-        Phoenix.PubSub.broadcast(ChimeraCms.PubSub, @pubsub_topic, {:project_deleted, deleted_project})
+        Phoenix.PubSub.broadcast(
+          ChimeraCms.PubSub,
+          @pubsub_topic,
+          {:project_deleted, deleted_project}
+        )
+
         {:ok, deleted_project}
-      error -> error
+
+      error ->
+        error
     end
   end
 

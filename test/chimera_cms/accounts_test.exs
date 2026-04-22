@@ -8,7 +8,14 @@ defmodule ChimeraCms.AccountsTest do
 
     import ChimeraCms.AccountsFixtures
 
-    @invalid_attrs %{active: nil, role: nil, email: nil, password_hash: nil, first_name: nil, last_name: nil}
+    @invalid_attrs %{
+      active: nil,
+      role: nil,
+      email: nil,
+      password_hash: nil,
+      first_name: nil,
+      last_name: nil
+    }
 
     test "list_users/0 returns all users" do
       user = user_fixture()
@@ -21,7 +28,14 @@ defmodule ChimeraCms.AccountsTest do
     end
 
     test "create_user/1 with valid data creates a user" do
-      valid_attrs = %{active: true, role: "some role", email: "some email", password_hash: "some password_hash", first_name: "some first_name", last_name: "some last_name"}
+      valid_attrs = %{
+        active: true,
+        role: "some role",
+        email: "some email",
+        password_hash: "some password_hash",
+        first_name: "some first_name",
+        last_name: "some last_name"
+      }
 
       assert {:ok, %User{} = user} = Accounts.create_user(valid_attrs)
       assert user.active == true
@@ -38,7 +52,15 @@ defmodule ChimeraCms.AccountsTest do
 
     test "update_user/2 with valid data updates the user" do
       user = user_fixture()
-      update_attrs = %{active: false, role: "some updated role", email: "some updated email", password_hash: "some updated password_hash", first_name: "some updated first_name", last_name: "some updated last_name"}
+
+      update_attrs = %{
+        active: false,
+        role: "some updated role",
+        email: "some updated email",
+        password_hash: "some updated password_hash",
+        first_name: "some updated first_name",
+        last_name: "some updated last_name"
+      }
 
       assert {:ok, %User{} = user} = Accounts.update_user(user, update_attrs)
       assert user.active == false

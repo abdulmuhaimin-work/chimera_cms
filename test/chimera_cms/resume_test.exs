@@ -8,7 +8,14 @@ defmodule ChimeraCms.ResumeTest do
 
     import ChimeraCms.ResumeFixtures
 
-    @invalid_attrs %{description: nil, title: nil, period: nil, company: nil, technologies: nil, sort_order: nil}
+    @invalid_attrs %{
+      description: nil,
+      title: nil,
+      period: nil,
+      company: nil,
+      technologies: nil,
+      sort_order: nil
+    }
 
     test "list_work_experiences/0 returns all work_experiences" do
       work_experience = work_experience_fixture()
@@ -21,9 +28,18 @@ defmodule ChimeraCms.ResumeTest do
     end
 
     test "create_work_experience/1 with valid data creates a work_experience" do
-      valid_attrs = %{description: "some description", title: "some title", period: "some period", company: "some company", technologies: ["option1", "option2"], sort_order: 42}
+      valid_attrs = %{
+        description: "some description",
+        title: "some title",
+        period: "some period",
+        company: "some company",
+        technologies: ["option1", "option2"],
+        sort_order: 42
+      }
 
-      assert {:ok, %WorkExperience{} = work_experience} = Resume.create_work_experience(valid_attrs)
+      assert {:ok, %WorkExperience{} = work_experience} =
+               Resume.create_work_experience(valid_attrs)
+
       assert work_experience.description == "some description"
       assert work_experience.title == "some title"
       assert work_experience.period == "some period"
@@ -38,9 +54,19 @@ defmodule ChimeraCms.ResumeTest do
 
     test "update_work_experience/2 with valid data updates the work_experience" do
       work_experience = work_experience_fixture()
-      update_attrs = %{description: "some updated description", title: "some updated title", period: "some updated period", company: "some updated company", technologies: ["option1"], sort_order: 43}
 
-      assert {:ok, %WorkExperience{} = work_experience} = Resume.update_work_experience(work_experience, update_attrs)
+      update_attrs = %{
+        description: "some updated description",
+        title: "some updated title",
+        period: "some updated period",
+        company: "some updated company",
+        technologies: ["option1"],
+        sort_order: 43
+      }
+
+      assert {:ok, %WorkExperience{} = work_experience} =
+               Resume.update_work_experience(work_experience, update_attrs)
+
       assert work_experience.description == "some updated description"
       assert work_experience.title == "some updated title"
       assert work_experience.period == "some updated period"
@@ -51,7 +77,10 @@ defmodule ChimeraCms.ResumeTest do
 
     test "update_work_experience/2 with invalid data returns error changeset" do
       work_experience = work_experience_fixture()
-      assert {:error, %Ecto.Changeset{}} = Resume.update_work_experience(work_experience, @invalid_attrs)
+
+      assert {:error, %Ecto.Changeset{}} =
+               Resume.update_work_experience(work_experience, @invalid_attrs)
+
       assert work_experience == Resume.get_work_experience!(work_experience.id)
     end
 

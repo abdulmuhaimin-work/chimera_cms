@@ -23,11 +23,12 @@ defmodule ChimeraCms.EtsRepo do
   def get(schema_module, id) do
     table = get_table_name(schema_module)
     # Convert string IDs to integers for ETS lookup
-    numeric_id = case id do
-      id when is_binary(id) -> String.to_integer(id)
-      id when is_integer(id) -> id
-      _ -> id
-    end
+    numeric_id =
+      case id do
+        id when is_binary(id) -> String.to_integer(id)
+        id when is_integer(id) -> id
+        _ -> id
+      end
 
     case :ets.lookup(table, numeric_id) do
       [{^numeric_id, record}] -> record
@@ -50,6 +51,7 @@ defmodule ChimeraCms.EtsRepo do
   """
   def all(schema_module) do
     table = get_table_name(schema_module)
+
     :ets.tab2list(table)
     |> Enum.map(fn {_id, record} -> record end)
     |> Enum.sort_by(& &1.inserted_at, {:desc, DateTime})
@@ -69,10 +71,11 @@ defmodule ChimeraCms.EtsRepo do
       base_data = changeset.data |> Map.from_struct()
       changes_map = changeset.changes |> Map.new()
 
-      record_data = Map.merge(base_data, changes_map)
-      |> Map.put(:id, id)
-      |> Map.put(:inserted_at, now)
-      |> Map.put(:updated_at, now)
+      record_data =
+        Map.merge(base_data, changes_map)
+        |> Map.put(:id, id)
+        |> Map.put(:inserted_at, now)
+        |> Map.put(:updated_at, now)
 
       record = struct(changeset.data.__struct__, record_data)
 
@@ -94,8 +97,9 @@ defmodule ChimeraCms.EtsRepo do
       base_data = changeset.data |> Map.from_struct()
       changes_map = changeset.changes |> Map.new()
 
-      updated_data = Map.merge(base_data, changes_map)
-      |> Map.put(:updated_at, DateTime.utc_now())
+      updated_data =
+        Map.merge(base_data, changes_map)
+        |> Map.put(:updated_at, DateTime.utc_now())
 
       updated_record = struct(changeset.data.__struct__, updated_data)
 
@@ -132,7 +136,7 @@ defmodule ChimeraCms.EtsRepo do
 
   ## GenServer callbacks
 
-    def init(_opts) do
+  def init(_opts) do
     Logger.info("🚀 ETS Repository starting...")
 
     # Load persisted data if it exists, otherwise create empty tables
@@ -140,7 +144,7 @@ defmodule ChimeraCms.EtsRepo do
     Logger.info("📁 Data loaded from disk: #{data_exists}")
 
     # Create any tables that weren't loaded from disk
-    unless data_exists do
+    if !data_exists do
       Logger.info("📋 Creating empty tables...")
       create_empty_tables()
     end
@@ -199,7 +203,7 @@ defmodule ChimeraCms.EtsRepo do
       end)
 
       # Save counters too
-      :ets.tab2file(@counters_table, 'priv/data/counters.ets')
+      :ets.tab2file(@counters_table, ~c"priv/data/counters.ets")
 
       Logger.debug("ETS data saved to disk")
       :ok
@@ -210,7 +214,7 @@ defmodule ChimeraCms.EtsRepo do
     end
   end
 
-      defp create_empty_tables do
+  defp create_empty_tables do
     # Create ETS tables
     Enum.each(@tables, fn table ->
       :ets.new(table, [:set, :public, :named_table])
@@ -229,9 +233,10 @@ defmodule ChimeraCms.EtsRepo do
 
   defp seed_if_empty do
     # Check if all tables are empty (except counters)
-    all_empty = Enum.all?(@tables, fn table ->
-      :ets.info(table, :size) == 0
-    end)
+    all_empty =
+      Enum.all?(@tables, fn table ->
+        :ets.info(table, :size) == 0
+      end)
 
     if all_empty do
       Logger.info("ETS tables are empty, auto-seeding initial data...")
@@ -248,39 +253,44 @@ defmodule ChimeraCms.EtsRepo do
     end
   end
 
-    defp load_from_disk do
+  defp load_from_disk do
     # Load data tables
-    data_loaded = Enum.reduce(@tables, false, fn table, acc ->
-      file_path = "priv/data/#{table}.ets"
-      if File.exists?(file_path) do
-        case :ets.file2tab(String.to_charlist(file_path)) do
-          {:ok, ^table} ->
-            count = :ets.info(table, :size)
-            Logger.info("Loaded #{count} records for #{table} from disk")
-            true
-          {:error, reason} ->
-            Logger.warning("Failed to load #{table}: #{inspect(reason)}")
-            acc
+    data_loaded =
+      Enum.reduce(@tables, false, fn table, acc ->
+        file_path = "priv/data/#{table}.ets"
+
+        if File.exists?(file_path) do
+          case :ets.file2tab(String.to_charlist(file_path)) do
+            {:ok, ^table} ->
+              count = :ets.info(table, :size)
+              Logger.info("Loaded #{count} records for #{table} from disk")
+              true
+
+            {:error, reason} ->
+              Logger.warning("Failed to load #{table}: #{inspect(reason)}")
+              acc
+          end
+        else
+          acc
         end
-      else
-        acc
-      end
-    end)
+      end)
 
     # Load counters
-    data_loaded = if File.exists?("priv/data/counters.ets") do
-      case :ets.file2tab('priv/data/counters.ets') do
-        {:ok, @counters_table} ->
-          count = :ets.info(@counters_table, :size)
-          Logger.info("Loaded #{count} counters from disk")
-          true
-        {:error, reason} ->
-          Logger.warning("Failed to load counters: #{inspect(reason)}")
-          data_loaded
+    data_loaded =
+      if File.exists?("priv/data/counters.ets") do
+        case :ets.file2tab(~c"priv/data/counters.ets") do
+          {:ok, @counters_table} ->
+            count = :ets.info(@counters_table, :size)
+            Logger.info("Loaded #{count} counters from disk")
+            true
+
+          {:error, reason} ->
+            Logger.warning("Failed to load counters: #{inspect(reason)}")
+            data_loaded
+        end
+      else
+        data_loaded
       end
-    else
-      data_loaded
-    end
 
     data_loaded
   end

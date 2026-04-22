@@ -16,7 +16,7 @@
             New Work Experience
           </.link>
         <% end %>
-        
+
         <%= if @live_action in [:show, :edit] do %>
           <.link
             navigate={~p"/admin/work-experiences"}
@@ -27,7 +27,6 @@
         <% end %>
       </div>
     </div>
-
     <!-- Content -->
     <div class="mt-8">
       <%= if @live_action == :index do %>
@@ -42,7 +41,10 @@
                       <div class="min-w-0 flex-1">
                         <div class="flex items-center space-x-3">
                           <h3 class="text-lg font-medium text-gray-900">
-                            <.link navigate={~p"/admin/work-experiences/#{work_experience.id}"} class="hover:text-indigo-600">
+                            <.link
+                              navigate={~p"/admin/work-experiences/#{work_experience.id}"}
+                              class="hover:text-indigo-600"
+                            >
                               <%= work_experience.title %>
                             </.link>
                           </h3>
@@ -57,10 +59,15 @@
                           <%= work_experience.period %>
                         </p>
                         <p class="mt-1 text-sm text-gray-600">
-                          <%= String.slice(work_experience.description, 0, 120) %><%= if String.length(work_experience.description) > 120, do: "..." %>
+                          <%= String.slice(work_experience.description, 0, 120) %><%= if String.length(
+                                                                                           work_experience.description
+                                                                                         ) > 120,
+                                                                                         do: "..." %>
                         </p>
                         <div class="mt-2 text-sm text-gray-500">
-                          <span>Updated <%= Calendar.strftime(work_experience.updated_at, "%B %d, %Y") %></span>
+                          <span>
+                            Updated <%= Calendar.strftime(work_experience.updated_at, "%B %d, %Y") %>
+                          </span>
                         </div>
                         <%= if work_experience.technologies && length(work_experience.technologies) > 0 do %>
                           <div class="mt-2 flex flex-wrap gap-1">
@@ -96,16 +103,24 @@
                     </div>
                   </div>
                 <% end %>
-                
+
                 <%= if @work_experiences == [] do %>
                   <div class="py-12 text-center">
                     <div class="mx-auto h-12 w-12 text-gray-400 mb-4">
                       <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="1"
+                          d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                        >
+                        </path>
                       </svg>
                     </div>
                     <h3 class="mt-2 text-sm font-medium text-gray-900">No work experiences</h3>
-                    <p class="mt-1 text-sm text-gray-500">Get started by adding your first work experience.</p>
+                    <p class="mt-1 text-sm text-gray-500">
+                      Get started by adding your first work experience.
+                    </p>
                     <div class="mt-6">
                       <.link
                         navigate={~p"/admin/work-experiences/new"}
@@ -148,11 +163,13 @@
                 <p class="text-lg text-indigo-600 mt-1"><%= @work_experience.company %></p>
                 <p class="text-sm text-gray-500 mt-1"><%= @work_experience.period %></p>
               </div>
-              
+
               <div>
                 <h3 class="text-lg font-medium text-gray-900 mb-2">Description</h3>
                 <div class="prose max-w-none">
-                  <p class="text-gray-700 whitespace-pre-line"><%= @work_experience.description %></p>
+                  <p class="text-gray-700 whitespace-pre-line">
+                    <%= @work_experience.description %>
+                  </p>
                 </div>
               </div>
 
@@ -170,8 +187,18 @@
               <% end %>
 
               <div class="text-sm text-gray-500 pt-4 border-t border-gray-200">
-                <p>Created <%= Calendar.strftime(@work_experience.inserted_at, "%B %d, %Y at %I:%M %p") %></p>
-                <p>Last updated <%= Calendar.strftime(@work_experience.updated_at, "%B %d, %Y at %I:%M %p") %></p>
+                <p>
+                  Created <%= Calendar.strftime(
+                    @work_experience.inserted_at,
+                    "%B %d, %Y at %I:%M %p"
+                  ) %>
+                </p>
+                <p>
+                  Last updated <%= Calendar.strftime(
+                    @work_experience.updated_at,
+                    "%B %d, %Y at %I:%M %p"
+                  ) %>
+                </p>
               </div>
             </div>
           </div>
@@ -186,34 +213,53 @@
             <div class="flex items-center">
               <div class="flex-shrink-0">
                 <div class="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
-                  <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                  <svg
+                    class="w-6 h-6 text-green-600"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                    />
                   </svg>
                 </div>
               </div>
               <div class="ml-4">
                 <h3 class="text-lg font-semibold text-gray-900">
-                  <%= if @live_action == :new, do: "Add New Work Experience", else: "Edit Work Experience" %>
+                  <%= if @live_action == :new,
+                    do: "Add New Work Experience",
+                    else: "Edit Work Experience" %>
                 </h3>
                 <p class="text-sm text-gray-600">
-                  <%= if @live_action == :new, do: "Add your professional experience and skills", else: "Update work experience details" %>
+                  <%= if @live_action == :new,
+                    do: "Add your professional experience and skills",
+                    else: "Update work experience details" %>
                 </p>
               </div>
             </div>
           </div>
 
           <div class="px-6 py-8">
-            <.form
-              for={@form}
-              phx-submit="save"
-              phx-change="validate"
-              class="space-y-8"
-            >
+            <.form for={@form} phx-submit="save" phx-change="validate" class="space-y-8">
               <!-- Basic Information Section -->
               <div class="bg-gray-50 rounded-lg p-6">
                 <h4 class="text-lg font-medium text-gray-900 mb-4 flex items-center">
-                  <svg class="w-5 h-5 text-indigo-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                  <svg
+                    class="w-5 h-5 text-indigo-600 mr-2"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                    />
                   </svg>
                   Basic Information
                 </h4>
@@ -260,12 +306,21 @@
                   </div>
                 </div>
               </div>
-
               <!-- Description Section -->
               <div class="bg-blue-50 rounded-lg p-6">
                 <h4 class="text-lg font-medium text-gray-900 mb-4 flex items-center">
-                  <svg class="w-5 h-5 text-blue-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                  <svg
+                    class="w-5 h-5 text-blue-600 mr-2"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                    />
                   </svg>
                   Job Description
                 </h4>
@@ -275,8 +330,18 @@
                       <span class="text-sm font-medium text-blue-800">Description</span>
                       <div class="flex items-center space-x-2 text-xs text-blue-600">
                         <span class="inline-flex items-center">
-                          <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                          <svg
+                            class="w-3 h-3 mr-1"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                              stroke-width="2"
+                              d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                            />
                           </svg>
                           Describe your role and achievements
                         </span>
@@ -299,13 +364,27 @@ Examples:
                   />
                 </div>
               </div>
-
               <!-- Technologies Section -->
               <div class="bg-purple-50 rounded-lg p-6">
                 <h4 class="text-lg font-medium text-gray-900 mb-4 flex items-center">
-                  <svg class="w-5 h-5 text-purple-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                  <svg
+                    class="w-5 h-5 text-purple-600 mr-2"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
+                    />
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                    />
                   </svg>
                   Technologies & Skills
                 </h4>
@@ -328,19 +407,28 @@ Docker"
                     class="font-mono text-sm"
                   />
                   <div class="mt-3 text-xs text-purple-600 bg-purple-100 rounded p-2">
-                    <strong>Tip:</strong> Enter each technology on a new line. Common examples: React, Vue.js, Python, JavaScript, PostgreSQL, AWS, Docker, Kubernetes, etc.
+                    <strong>Tip:</strong>
+                    Enter each technology on a new line. Common examples: React, Vue.js, Python, JavaScript, PostgreSQL, AWS, Docker, Kubernetes, etc.
                   </div>
                 </div>
               </div>
-
               <!-- Form Actions -->
               <div class="flex justify-end space-x-3 pt-6 border-t border-gray-200">
                 <.link
-                  navigate={@live_action == :edit && @work_experience.id && ~p"/admin/work-experiences/#{@work_experience.id}" || ~p"/admin/work-experiences"}
+                  navigate={
+                    (@live_action == :edit && @work_experience.id &&
+                       ~p"/admin/work-experiences/#{@work_experience.id}") ||
+                      ~p"/admin/work-experiences"
+                  }
                   class="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                 >
                   <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M6 18L18 6M6 6l12 12"
+                    />
                   </svg>
                   Cancel
                 </.link>
@@ -349,9 +437,16 @@ Docker"
                   class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                 >
                   <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M5 13l4 4L19 7"
+                    />
                   </svg>
-                  <%= if @live_action == :new, do: "Create Work Experience", else: "Update Work Experience" %>
+                  <%= if @live_action == :new,
+                    do: "Create Work Experience",
+                    else: "Update Work Experience" %>
                 </button>
               </div>
             </.form>
@@ -360,4 +455,4 @@ Docker"
       <% end %>
     </div>
   </div>
-</div> 
+</div>

@@ -13,7 +13,14 @@ defmodule ChimeraCmsWeb.Router do
 
   pipeline :api do
     plug :accepts, ["json"]
-    plug Corsica, origins: ["http://localhost:3000", "http://localhost:5173", "http://localhost:4173", "https://abdulmuhaimin.my"]
+
+    plug Corsica,
+      origins: [
+        "http://localhost:3000",
+        "http://localhost:5173",
+        "http://localhost:4173",
+        "https://abdulmuhaimin.my"
+      ]
   end
 
   # Public GET /api/* only — do not add to authenticated /api/admin
@@ -37,8 +44,6 @@ defmodule ChimeraCmsWeb.Router do
 
     get "/", PageController, :home
   end
-
-
 
   # Public API routes
   scope "/api", ChimeraCmsWeb do
@@ -84,7 +89,7 @@ defmodule ChimeraCmsWeb.Router do
     live "/projects/new", ProjectsLive, :new
     live "/projects/:id/edit", ProjectsLive, :edit
     live "/projects/:id", ProjectsLive, :show
-        live "/work-experiences", WorkExperiencesLive, :index
+    live "/work-experiences", WorkExperiencesLive, :index
     live "/work-experiences/new", WorkExperiencesLive, :new
     live "/work-experiences/:id/edit", WorkExperiencesLive, :edit
     live "/work-experiences/:id", WorkExperiencesLive, :show
@@ -108,7 +113,6 @@ defmodule ChimeraCmsWeb.Router do
 
     scope "/dev" do
       pipe_through :browser
-
     end
   end
 end

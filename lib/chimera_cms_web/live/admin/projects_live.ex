@@ -10,8 +10,13 @@ defmodule ChimeraCmsWeb.Admin.ProjectsLive do
       Portfolio.subscribe()
     end
 
-    {:ok, socket
-    |> allow_upload(:image, accept: ~w(.jpg .jpeg .png .gif .webp), max_entries: 1, max_file_size: 5_000_000)}
+    {:ok,
+     socket
+     |> allow_upload(:image,
+       accept: ~w(.jpg .jpeg .png .gif .webp),
+       max_entries: 1,
+       max_file_size: 5_000_000
+     )}
   end
 
   @impl true
@@ -81,6 +86,7 @@ defmodule ChimeraCmsWeb.Admin.ProjectsLive do
     case Portfolio.update_project(project, %{featured: !project.featured}) do
       {:ok, _} ->
         action = if project.featured, do: "unfeatured", else: "featured"
+
         {:noreply,
          socket
          |> put_flash(:info, "Project #{action} successfully")
@@ -165,19 +171,21 @@ defmodule ChimeraCmsWeb.Admin.ProjectsLive do
 
   @impl true
   def handle_info({:project_updated, project}, socket) do
-    {:noreply, update(socket, :projects, fn projects ->
-      Enum.map(projects, fn p -> if p.id == project.id, do: project, else: p end)
-    end)}
+    {:noreply,
+     update(socket, :projects, fn projects ->
+       Enum.map(projects, fn p -> if p.id == project.id, do: project, else: p end)
+     end)}
   end
 
-    @impl true
+  @impl true
   def handle_info({:project_deleted, project}, socket) do
-    {:noreply, update(socket, :projects, fn projects ->
-      Enum.reject(projects, fn p -> p.id == project.id end)
-    end)}
+    {:noreply,
+     update(socket, :projects, fn projects ->
+       Enum.reject(projects, fn p -> p.id == project.id end)
+     end)}
   end
 
-    # Handle file upload
+  # Handle file upload
   defp handle_file_upload(socket, project_params) do
     case uploaded_entries(socket, :image) do
       [] ->
@@ -189,21 +197,23 @@ defmodule ChimeraCmsWeb.Admin.ProjectsLive do
 
       [entry] ->
         case consume_uploaded_entry(socket, entry, fn %{path: path} ->
-          # Generate unique filename
-          extension = Path.extname(entry.client_name)
-          filename = "#{System.unique_integer()}_#{System.os_time()}" <> extension
+               # Generate unique filename
+               extension = Path.extname(entry.client_name)
+               filename = "#{System.unique_integer()}_#{System.os_time()}" <> extension
 
-          # Create uploads directory if it doesn't exist
-          uploads_dir = Path.join([Application.app_dir(:chimera_cms, "priv"), "static", "uploads"])
-          File.mkdir_p!(uploads_dir)
+               # Create uploads directory if it doesn't exist
+               uploads_dir =
+                 Path.join([Application.app_dir(:chimera_cms, "priv"), "static", "uploads"])
 
-          # Copy file to uploads directory
-          dest_path = Path.join(uploads_dir, filename)
-          File.cp!(path, dest_path)
+               File.mkdir_p!(uploads_dir)
 
-          # Return the URL path
-          {:ok, "/uploads/#{filename}"}
-        end) do
+               # Copy file to uploads directory
+               dest_path = Path.join(uploads_dir, filename)
+               File.cp!(path, dest_path)
+
+               # Return the URL path
+               {:ok, "/uploads/#{filename}"}
+             end) do
           {:ok, image_url} ->
             Map.put(project_params, "image", image_url)
 
@@ -216,7 +226,10 @@ defmodule ChimeraCmsWeb.Admin.ProjectsLive do
   # Helper function to humanize upload errors
   defp humanize_upload_error(:too_large), do: "File is too large (max 5MB)"
   defp humanize_upload_error(:too_many_files), do: "You can only upload one file"
-  defp humanize_upload_error(:not_accepted), do: "File type not supported. Please use PNG, JPG, GIF, or WebP"
+
+  defp humanize_upload_error(:not_accepted),
+    do: "File type not supported. Please use PNG, JPG, GIF, or WebP"
+
   defp humanize_upload_error(error), do: "Upload error: #{error}"
 
   # Preprocess array fields - convert comma-separated strings to arrays
@@ -247,11 +260,15 @@ defmodule ChimeraCmsWeb.Admin.ProjectsLive do
   # Helper functions for template display - safely convert to arrays
   defp safe_tags_array(nil), do: []
   defp safe_tags_array(tags) when is_list(tags), do: tags
-  defp safe_tags_array(tags) when is_binary(tags), do: String.split(tags, ",") |> Enum.map(&String.trim/1)
+
+  defp safe_tags_array(tags) when is_binary(tags),
+    do: String.split(tags, ",") |> Enum.map(&String.trim/1)
 
   defp safe_tech_stack_array(nil), do: []
   defp safe_tech_stack_array(tech_stack) when is_list(tech_stack), do: tech_stack
-  defp safe_tech_stack_array(tech_stack) when is_binary(tech_stack), do: String.split(tech_stack, ",") |> Enum.map(&String.trim/1)
+
+  defp safe_tech_stack_array(tech_stack) when is_binary(tech_stack),
+    do: String.split(tech_stack, ",") |> Enum.map(&String.trim/1)
 
   # Convert arrays back to comma-separated strings for form editing
   defp convert_arrays_to_strings(project) do

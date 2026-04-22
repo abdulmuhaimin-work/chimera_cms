@@ -100,11 +100,19 @@ defmodule ChimeraCms.Blog do
   """
   def delete_post(%Post{} = post) do
     result = Repo.delete(post)
+
     case result do
       {:ok, deleted_post} ->
-        Phoenix.PubSub.broadcast(ChimeraCms.PubSub, @pubsub_topic, {:blog_post_deleted, deleted_post})
+        Phoenix.PubSub.broadcast(
+          ChimeraCms.PubSub,
+          @pubsub_topic,
+          {:blog_post_deleted, deleted_post}
+        )
+
         {:ok, deleted_post}
-      error -> error
+
+      error ->
+        error
     end
   end
 

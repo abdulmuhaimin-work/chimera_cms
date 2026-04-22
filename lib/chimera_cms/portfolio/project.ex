@@ -26,7 +26,24 @@ defmodule ChimeraCms.Portfolio.Project do
   @doc false
   def changeset(project, attrs) do
     project
-    |> cast(attrs, [:title, :description, :overview, :problem, :solution, :outcome, :tags, :tech_stack, :image, :repo_url, :live_url, :timeline, :role, :client, :featured, :sort_order])
+    |> cast(attrs, [
+      :title,
+      :description,
+      :overview,
+      :problem,
+      :solution,
+      :outcome,
+      :tags,
+      :tech_stack,
+      :image,
+      :repo_url,
+      :live_url,
+      :timeline,
+      :role,
+      :client,
+      :featured,
+      :sort_order
+    ])
     |> validate_required([:title, :description])
     |> validate_length(:title, min: 1, max: 255)
     |> validate_length(:description, min: 10, max: 1000)

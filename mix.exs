@@ -35,6 +35,7 @@ defmodule ChimeraCms.MixProject do
     [
       {:phoenix, "~> 1.7.10"},
       {:ecto, "~> 3.10"},
+      {:ecto_sql, "~> 3.10"},
       {:phoenix_ecto, "~> 4.4"},
       {:phoenix_html, "~> 3.3"},
       {:phoenix_live_reload, "~> 1.2", only: :dev},
@@ -52,7 +53,7 @@ defmodule ChimeraCms.MixProject do
       {:dns_cluster, "~> 0.1.1"},
       {:plug_cowboy, "~> 2.5"},
       # CMS-specific dependencies
-      {:guardian, "~> 2.3"},
+      {:guardian, "~> 2.4"},
       {:guardian_phoenix, "~> 2.0"},
       {:pbkdf2_elixir, "~> 2.0"},
       {:corsica, "~> 2.1"},

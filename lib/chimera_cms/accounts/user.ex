@@ -54,7 +54,9 @@ defmodule ChimeraCms.Accounts.User do
 
   defp validate_email(changeset) do
     changeset
-    |> validate_format(:email, ~r/^[^\s]+@[^\s]+\.[^\s]+$/, message: "must be a valid email address")
+    |> validate_format(:email, ~r/^[^\s]+@[^\s]+\.[^\s]+$/,
+      message: "must be a valid email address"
+    )
     |> validate_length(:email, max: 160)
   end
 

@@ -8,7 +8,24 @@ defmodule ChimeraCms.PortfolioTest do
 
     import ChimeraCms.PortfolioFixtures
 
-    @invalid_attrs %{description: nil, title: nil, image: nil, role: nil, client: nil, repo_url: nil, overview: nil, problem: nil, solution: nil, outcome: nil, tags: nil, tech_stack: nil, live_url: nil, timeline: nil, featured: nil, sort_order: nil}
+    @invalid_attrs %{
+      description: nil,
+      title: nil,
+      image: nil,
+      role: nil,
+      client: nil,
+      repo_url: nil,
+      overview: nil,
+      problem: nil,
+      solution: nil,
+      outcome: nil,
+      tags: nil,
+      tech_stack: nil,
+      live_url: nil,
+      timeline: nil,
+      featured: nil,
+      sort_order: nil
+    }
 
     test "list_projects/0 returns all projects" do
       project = project_fixture()
@@ -21,7 +38,24 @@ defmodule ChimeraCms.PortfolioTest do
     end
 
     test "create_project/1 with valid data creates a project" do
-      valid_attrs = %{description: "some description", title: "some title", image: "some image", role: "some role", client: "some client", repo_url: "some repo_url", overview: "some overview", problem: "some problem", solution: "some solution", outcome: "some outcome", tags: ["option1", "option2"], tech_stack: ["option1", "option2"], live_url: "some live_url", timeline: "some timeline", featured: true, sort_order: 42}
+      valid_attrs = %{
+        description: "some description",
+        title: "some title",
+        image: "some image",
+        role: "some role",
+        client: "some client",
+        repo_url: "some repo_url",
+        overview: "some overview",
+        problem: "some problem",
+        solution: "some solution",
+        outcome: "some outcome",
+        tags: ["option1", "option2"],
+        tech_stack: ["option1", "option2"],
+        live_url: "some live_url",
+        timeline: "some timeline",
+        featured: true,
+        sort_order: 42
+      }
 
       assert {:ok, %Project{} = project} = Portfolio.create_project(valid_attrs)
       assert project.description == "some description"
@@ -48,7 +82,25 @@ defmodule ChimeraCms.PortfolioTest do
 
     test "update_project/2 with valid data updates the project" do
       project = project_fixture()
-      update_attrs = %{description: "some updated description", title: "some updated title", image: "some updated image", role: "some updated role", client: "some updated client", repo_url: "some updated repo_url", overview: "some updated overview", problem: "some updated problem", solution: "some updated solution", outcome: "some updated outcome", tags: ["option1"], tech_stack: ["option1"], live_url: "some updated live_url", timeline: "some updated timeline", featured: false, sort_order: 43}
+
+      update_attrs = %{
+        description: "some updated description",
+        title: "some updated title",
+        image: "some updated image",
+        role: "some updated role",
+        client: "some updated client",
+        repo_url: "some updated repo_url",
+        overview: "some updated overview",
+        problem: "some updated problem",
+        solution: "some updated solution",
+        outcome: "some updated outcome",
+        tags: ["option1"],
+        tech_stack: ["option1"],
+        live_url: "some updated live_url",
+        timeline: "some updated timeline",
+        featured: false,
+        sort_order: 43
+      }
 
       assert {:ok, %Project{} = project} = Portfolio.update_project(project, update_attrs)
       assert project.description == "some updated description"

@@ -18,7 +18,16 @@ defmodule ChimeraCms.Blog.Post do
   @doc false
   def changeset(post, attrs) do
     post
-    |> cast(attrs, [:title, :slug, :content, :excerpt, :featured_image, :published, :published_at, :tags])
+    |> cast(attrs, [
+      :title,
+      :slug,
+      :content,
+      :excerpt,
+      :featured_image,
+      :published,
+      :published_at,
+      :tags
+    ])
     |> validate_required([:title, :content])
     |> validate_length(:title, min: 1, max: 255)
     |> validate_length(:excerpt, max: 500)
@@ -28,7 +37,12 @@ defmodule ChimeraCms.Blog.Post do
   end
 
   defp put_slug(%Ecto.Changeset{valid?: true, changes: %{title: title}} = changeset) do
-    slug = title |> String.downcase() |> String.replace(~r/[^a-z0-9\s-]/, "") |> String.replace(~r/\s+/, "-")
+    slug =
+      title
+      |> String.downcase()
+      |> String.replace(~r/[^a-z0-9\s-]/, "")
+      |> String.replace(~r/\s+/, "-")
+
     put_change(changeset, :slug, slug)
   end
 

@@ -25,6 +25,7 @@ defmodule ChimeraCmsWeb.Plugs.PublicCache do
   end
 
   defp maybe_add_swr(dirs, nil), do: dirs
+
   defp maybe_add_swr(dirs, seconds) when is_integer(seconds) and seconds > 0 do
     dirs ++ ["stale-while-revalidate=#{seconds}"]
   end

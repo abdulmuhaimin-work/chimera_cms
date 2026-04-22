@@ -31,7 +31,8 @@ defmodule ChimeraCms.Resume do
   """
   def list_work_experiences do
     Repo.all(WorkExperience)
-    |> Enum.sort_by(fn w -> {w.sort_order || 0, w.inserted_at} end, fn {a_sort, a_time}, {b_sort, b_time} ->
+    |> Enum.sort_by(fn w -> {w.sort_order || 0, w.inserted_at} end, fn {a_sort, a_time},
+                                                                       {b_sort, b_time} ->
       cond do
         a_sort != b_sort -> a_sort <= b_sort
         true -> DateTime.compare(a_time, b_time) == :gt

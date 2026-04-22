@@ -46,7 +46,11 @@ defmodule ChimeraCmsWeb.Admin.WorkExperiencesLive do
   defp apply_action(socket, :edit, %{"id" => id}) do
     work_experience = Resume.get_work_experience!(id)
     # Convert technologies array back to string for form display
-    work_experience_with_string_techs = %{work_experience | technologies: technologies_to_string(work_experience.technologies)}
+    work_experience_with_string_techs = %{
+      work_experience
+      | technologies: technologies_to_string(work_experience.technologies)
+    }
+
     changeset = Resume.change_work_experience(work_experience_with_string_techs)
 
     socket
@@ -135,25 +139,33 @@ defmodule ChimeraCmsWeb.Admin.WorkExperiencesLive do
 
   @impl true
   def handle_info({:work_experience_created, work_experience}, socket) do
-    {:noreply, update(socket, :work_experiences, fn work_experiences -> [work_experience | work_experiences] end)}
+    {:noreply,
+     update(socket, :work_experiences, fn work_experiences ->
+       [work_experience | work_experiences]
+     end)}
   end
 
   @impl true
   def handle_info({:work_experience_updated, work_experience}, socket) do
-    {:noreply, update(socket, :work_experiences, fn work_experiences ->
-      Enum.map(work_experiences, fn we -> if we.id == work_experience.id, do: work_experience, else: we end)
-    end)}
+    {:noreply,
+     update(socket, :work_experiences, fn work_experiences ->
+       Enum.map(work_experiences, fn we ->
+         if we.id == work_experience.id, do: work_experience, else: we
+       end)
+     end)}
   end
 
   @impl true
   def handle_info({:work_experience_deleted, work_experience}, socket) do
-    {:noreply, update(socket, :work_experiences, fn work_experiences ->
-      Enum.reject(work_experiences, fn we -> we.id == work_experience.id end)
-    end)}
+    {:noreply,
+     update(socket, :work_experiences, fn work_experiences ->
+       Enum.reject(work_experiences, fn we -> we.id == work_experience.id end)
+     end)}
   end
 
   # Helper functions for technologies field conversion
-  defp process_technologies(%{"technologies" => technologies} = params) when is_binary(technologies) do
+  defp process_technologies(%{"technologies" => technologies} = params)
+       when is_binary(technologies) do
     technology_list =
       technologies
       |> String.split("\n")

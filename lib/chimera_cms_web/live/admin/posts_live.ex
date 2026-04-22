@@ -80,6 +80,7 @@ defmodule ChimeraCmsWeb.Admin.PostsLive do
     case Blog.update_post(post, %{published: !post.published}) do
       {:ok, _} ->
         action = if post.published, do: "unpublished", else: "published"
+
         {:noreply,
          socket
          |> put_flash(:info, "Post #{action} successfully")
@@ -156,22 +157,26 @@ defmodule ChimeraCmsWeb.Admin.PostsLive do
 
   @impl true
   def handle_info({:blog_post_updated, post}, socket) do
-    {:noreply, update(socket, :posts, fn posts ->
-      Enum.map(posts, fn p -> if p.id == post.id, do: post, else: p end)
-    end)}
+    {:noreply,
+     update(socket, :posts, fn posts ->
+       Enum.map(posts, fn p -> if p.id == post.id, do: post, else: p end)
+     end)}
   end
 
   @impl true
   def handle_info({:blog_post_deleted, post}, socket) do
-    {:noreply, update(socket, :posts, fn posts ->
-      Enum.reject(posts, fn p -> p.id == post.id end)
-    end)}
+    {:noreply,
+     update(socket, :posts, fn posts ->
+       Enum.reject(posts, fn p -> p.id == post.id end)
+     end)}
   end
 
   # Helper function for template display - safely convert tags to array
   defp safe_tags_array(nil), do: []
   defp safe_tags_array(tags) when is_list(tags), do: tags
-  defp safe_tags_array(tags) when is_binary(tags), do: String.split(tags, ",") |> Enum.map(&String.trim/1)
+
+  defp safe_tags_array(tags) when is_binary(tags),
+    do: String.split(tags, ",") |> Enum.map(&String.trim/1)
 
   # Convert arrays back to comma-separated strings for form editing
   defp convert_arrays_to_strings(post) do

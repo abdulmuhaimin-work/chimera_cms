@@ -8,7 +8,16 @@ defmodule ChimeraCms.BlogTest do
 
     import ChimeraCms.BlogFixtures
 
-    @invalid_attrs %{title: nil, slug: nil, content: nil, excerpt: nil, featured_image: nil, published: nil, published_at: nil, tags: nil}
+    @invalid_attrs %{
+      title: nil,
+      slug: nil,
+      content: nil,
+      excerpt: nil,
+      featured_image: nil,
+      published: nil,
+      published_at: nil,
+      tags: nil
+    }
 
     test "list_posts/0 returns all posts" do
       post = post_fixture()
@@ -21,7 +30,16 @@ defmodule ChimeraCms.BlogTest do
     end
 
     test "create_post/1 with valid data creates a post" do
-      valid_attrs = %{title: "some title", slug: "some slug", content: "some content", excerpt: "some excerpt", featured_image: "some featured_image", published: true, published_at: ~U[2025-07-12 06:51:00Z], tags: ["option1", "option2"]}
+      valid_attrs = %{
+        title: "some title",
+        slug: "some slug",
+        content: "some content",
+        excerpt: "some excerpt",
+        featured_image: "some featured_image",
+        published: true,
+        published_at: ~U[2025-07-12 06:51:00Z],
+        tags: ["option1", "option2"]
+      }
 
       assert {:ok, %Post{} = post} = Blog.create_post(valid_attrs)
       assert post.title == "some title"
@@ -40,7 +58,17 @@ defmodule ChimeraCms.BlogTest do
 
     test "update_post/2 with valid data updates the post" do
       post = post_fixture()
-      update_attrs = %{title: "some updated title", slug: "some updated slug", content: "some updated content", excerpt: "some updated excerpt", featured_image: "some updated featured_image", published: false, published_at: ~U[2025-07-13 06:51:00Z], tags: ["option1"]}
+
+      update_attrs = %{
+        title: "some updated title",
+        slug: "some updated slug",
+        content: "some updated content",
+        excerpt: "some updated excerpt",
+        featured_image: "some updated featured_image",
+        published: false,
+        published_at: ~U[2025-07-13 06:51:00Z],
+        tags: ["option1"]
+      }
 
       assert {:ok, %Post{} = post} = Blog.update_post(post, update_attrs)
       assert post.title == "some updated title"
